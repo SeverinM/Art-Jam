@@ -63,6 +63,7 @@ public class Prop : MonoBehaviour
 
     //Tous les GO de chaque type
     static Dictionary<int, List<GameObject>> allTypes;
+    static float maxRange = 10;
 
     List<Gaussian> allGauss;
     int spawnCount = 3;
@@ -74,8 +75,14 @@ public class Prop : MonoBehaviour
     float StartLength = 0.001f;
     public float Length => StartLength;
 
+    static Buffer buff;
+
     private void Awake()
     {
+        if (buff == null)
+        {
+            buff = new Buffer();
+        }
         color1 = new Color(Random.value, Random.value, Random.value, 1);
         color2 = new Color(Random.value, Random.value, Random.value, 1);
         if (allTypes == null)
@@ -123,7 +130,6 @@ public class Prop : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
             allPoints[i].random += Random.value * Time.deltaTime;
-            Debug.DrawLine(allPoints[i].position, allPoints[i > 0 ? i - 1 : size - 1].position,Color.red);
         }
 
         if (spawnCount == 0)
@@ -157,6 +163,14 @@ public class Prop : MonoBehaviour
        //Recupere index prefab
         int index;
         Vector3 futurePosition = transform.position + (new Vector3(Mathf.Cos(ind * Mathf.Deg2Rad), 0, Mathf.Sin(ind * Mathf.Deg2Rad)) * Length);
+
+        int countError = 0;
+        while (Vector3.Distance(new Vector3(0,0,0) , futurePosition + new Vector3(Length, 0, Length)) > maxRange && countError++ < 20)
+        {
+            ind += 10;
+            ind %= 360;
+            futurePosition = transform.position + (new Vector3(Mathf.Cos(ind * Mathf.Deg2Rad), 0, Mathf.Sin(ind * Mathf.Deg2Rad)) * Length);
+        }
         lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
 
         if (lastCreatedAbsolute.GetComponent<MeshRenderer>())
@@ -166,6 +180,19 @@ public class Prop : MonoBehaviour
 
         allTypes[index].Add(lastCreatedAbsolute);
         lastCreatedType = index;
+
+        //Bufferisation
+        buff.TryStore(lastCreatedAbsolute);
+
+        //Ramification
+        if (buff.TryReplaceLast() && buff.Stored != null && buff.Stored != this.gameObject)
+        {
+            lastCreatedAbsolute = buff.Stored;
+            Vector3 delta = transform.position;
+            delta = Quaternion.AngleAxis(Random.Range(-30, 30), Vector3.up) * delta;
+            futurePosition = lastCreatedAbsolute.transform.position + (delta.normalized * Length);
+            lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
+        }
     }
 
     #region modification
@@ -178,7 +205,7 @@ public class Prop : MonoBehaviour
 
     public void FilterColor(Material mat, Vector3 position)
     {
-        Color sampledColor = Color.Lerp(color1, color2, (Mathf.PerlinNoise(position.x / freqPerlin, position.z / freqPerlin)));
+        Color sampledColor = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
         mat.color = sampledColor;
     }
 
@@ -292,7 +319,6 @@ public class Prop : MonoBehaviour
             {
                 sample -= 180;
                 sample %= 360;
-                Debug.Log("demi tour");
             }
             Spawn(sample);
         }
@@ -306,12 +332,11 @@ public class Prop : MonoBehaviour
             {
                 sample -= 180;
                 sample %= 360;
-                Debug.Log("demi tour");
             }
             Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn(sample);
         }
-        Color col = new Color(Random.value, Random.value, Random.value, 1);
-        foreach(GameObject gob in allTypes[type])
+        Color col = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
+        foreach (GameObject gob in allTypes[type])
         {
             if (gob.GetComponent<MeshRenderer>())
                 gob.GetComponent<MeshRenderer>().material.color = col;
