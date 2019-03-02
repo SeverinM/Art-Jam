@@ -24,13 +24,23 @@ struct Gaussian
     public float middle;
 }
 
+public enum ActionsInput
+{
+    SetColorPerType,
+    BiggerCell,
+    ModifyShape,
+    Copy,
+}
+
 public class Prop : MonoBehaviour
 {
+    float Duration = 10;
     PointPropagation[] allPoints;
 
     Color color1;
     Color color2;
-    GameObject lastCreatedAbsolute;
+    static GameObject lastCreatedAbsolute;
+    int lastCreatedType;
 
     [SerializeField]
     AnimationCurve curve;
@@ -38,7 +48,7 @@ public class Prop : MonoBehaviour
     bool isPressing;
 
     [SerializeField]
-    int size;
+    int size = 360;
 
     Vector3 origin;
 
@@ -48,15 +58,29 @@ public class Prop : MonoBehaviour
     [SerializeField]
     float freqPerlin = 0.01f;
 
+    //Tous les GO de chaque type
+    static Dictionary<int, List<GameObject>> allTypes = new Dictionary<int, List<GameObject>>();
+
     List<Gaussian> allGauss;
-    float speed;
+    int spawnCount = 3;
+
+    [SerializeField]
+    bool stop;
+
+    [SerializeField]
+    float StartLength = 0.001f;
 
     private void Awake()
     {
         color1 = new Color(Random.value, Random.value, Random.value, 1);
         color2 = new Color(Random.value, Random.value, Random.value, 1);
+        for (int i = 0; i < allSpawn.Count; i++)
+        {
+            allTypes[i] = new List<GameObject>();
+        }
 
-        speed = 0.1f;
+        lastCreatedType = -1;
+        origin = transform.position;
     }
 
     // Start is called before the first frame update
@@ -73,12 +97,11 @@ public class Prop : MonoBehaviour
         }
 
         allPoints = new PointPropagation[size];
-        origin = transform.position;
 
         for (int i = 0; i < size; i++)
         {
             float angle = i * ((Mathf.PI * 2) / size);
-            allPoints[i].position = new Vector3(Mathf.Cos(angle),0, Mathf.Sin(angle)) + origin;
+            allPoints[i].position = (new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * StartLength) + origin;
             UpdateGauss(i);
             allPoints[i].random = Random.Range(-10, 5);
             allPoints[i].randomSecondary = Random.Range(5, 30);
@@ -88,36 +111,25 @@ public class Prop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Duration -= Time.deltaTime;
+
         if (isPressing) pressedSince += Time.deltaTime;
 
         for (int i = 0; i < size; i++)
         {
-            allPoints[i].position += (allPoints[i].position - origin).normalized * (allPoints[i].modifier + curve.Evaluate(pressedSince));
+            allPoints[i].position += (allPoints[i].position - origin).normalized * (allPoints[i].modifier) * (stop ? 0 : 1); 
             allPoints[i].random += Random.value * Time.deltaTime;
-            Debug.DrawLine(allPoints[i].position, allPoints[i > 0 ? i - 1 : size - 1].position,Color.red);
-
-            //Spawn un truc
-            if (allPoints[i].random > 2)
-            {
-                allPoints[i].randomSecondary--;
-                allPoints[i].random = 0;
-                if (allPoints[i].randomSecondary == 0)
-                {
-                    allPoints[i].randomSecondary = Random.Range(0, 10);
-                    Vector3 previous = allPoints[i > 0 ? i - 1 : size - 1].position;
-                    allPoints[i].random = 0;
-                    allPoints[i].lastCreated = Instantiate(ReturnRandomList<GameObject>(allSpawn), Vector3.Lerp(previous, allPoints[i].position, Random.value), new Quaternion());
-                    allPoints[i].lastCreated.transform.localScale *= (Mathf.PerlinNoise(allPoints[i].position.x / freqPerlin, allPoints[i].position.z / freqPerlin) + 0.5f);
-                    FilterColor(allPoints[i].lastCreated.GetComponent<MeshRenderer>().material, allPoints[i].position);
-                    lastCreatedAbsolute = allPoints[i].lastCreated;
-                }
-            }
+            //Debug.DrawLine(allPoints[i].position, allPoints[i > 0 ? i - 1 : size - 1].position,Color.red);
         }
+
+        if (spawnCount == 0)
+            Destroy(this);
     }
 
-    T ReturnRandomList<T>(List<T> list)
+    T ReturnRandomList<T>(List<T> list, out int index)
     {
-        return list[Random.Range(0, list.Count)];
+        index = Random.Range(0, list.Count);
+        return list[index];
     }
 
     float CalculateGaussian(float x, Gaussian gauss)
@@ -126,6 +138,42 @@ public class Prop : MonoBehaviour
         float v2 = Mathf.Exp(v1);
         float v3 = (1 / (gauss.variance * Mathf.Sqrt(2 * Mathf.PI))) * v2;
         return v3;
+    }
+
+    Vector3 Sample(float angle)
+    {
+        float frac = angle - Mathf.Floor(angle);
+        int ang = (int)angle;
+        return Vector3.Lerp(allPoints[ang - 1].position , allPoints[ang].position, frac);
+
+    }
+
+    void Spawn(int ind)
+    {
+        allPoints[ind].randomSecondary = Random.Range(0, 10);
+        Vector3 previous = allPoints[ind > 0 ? ind - 1 : size - 1].position;
+        allPoints[ind].random = 0;
+
+        //Recupere index prefab
+        int index;
+        allPoints[ind].lastCreated = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), Vector3.Lerp(previous, allPoints[ind].position, Random.value), new Quaternion());
+        allPoints[ind].lastCreated.transform.localScale *= (Mathf.PerlinNoise(allPoints[ind].position.x / freqPerlin, allPoints[ind].position.z / freqPerlin) + 0.5f);
+        spawnCount--;
+
+        if (allPoints[ind].lastCreated.GetComponent<MeshRenderer>())
+            FilterColor(allPoints[ind].lastCreated.GetComponent<MeshRenderer>().material, allPoints[ind].position);
+        if (allPoints[ind].lastCreated.GetComponent<SkinnedMeshRenderer>())
+            FilterColor(allPoints[ind].lastCreated.GetComponent<SkinnedMeshRenderer>().material, allPoints[ind].position);
+
+        lastCreatedAbsolute = allPoints[ind].lastCreated;
+        allTypes[index].Add(lastCreatedAbsolute);
+        lastCreatedType = index;
+        if (lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>())
+        {
+            lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 1);
+            lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(1, 1);
+            lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(2, 1);
+        }
     }
 
     #region modification
@@ -142,54 +190,36 @@ public class Prop : MonoBehaviour
         mat.color = sampledColor;
     }
 
-    public void AddVerticalExtension(float intensity)
+    public void InterpretInput(ActionsInput act, int type)
     {
-        Gaussian gauss;
-        gauss.middle = 90;
-        gauss.variance = intensity;
-        allGauss.Add(gauss);
-
-        gauss.middle = 270;
-        gauss.variance = intensity;
-        allGauss.Add(gauss);
-
-        for (int i = 0; i < size; i++)
+        switch (act)
         {
-            UpdateGauss(i);
+            case (ActionsInput.BiggerCell):
+                StartCoroutine(Grow());
+                break;
         }
-    }
-
-    public void AddHorizontalExtension(float intensity)
-    {
-        Gaussian gauss;
-        gauss.middle = 0;
-        gauss.variance = intensity;
-        allGauss.Add(gauss);
-
-        gauss.middle = 180;
-        gauss.variance = intensity;
-        allGauss.Add(gauss);
-
-        for (int i = 0; i < size; i++)
-        {
-            UpdateGauss(i);
-        }
-    }
-
-    public void StartPress()
-    {
-        isPressing = true;
-    }
-
-    public void EndPress()
-    {
-        isPressing = false;
-        pressedSince = 0;
-    }
-
-    public void setSizeLast(float delta)
-    {
-        lastCreatedAbsolute.transform.localScale *= delta;
     }
     #endregion
+
+    IEnumerator Grow()
+    {
+        GameObject gob = Prop.lastCreatedAbsolute;
+        float time = 0;
+        float previousVal = 0;
+        while (time < 2)
+        {
+            float value = Mathf.Log(time * 10);
+            time += Time.deltaTime;
+            gob.transform.localScale += new Vector3(value - previousVal, value - previousVal, value - previousVal);
+            previousVal = value;
+            yield return null;
+        }
+
+        yield return null;
+    }
+
+    IEnumerable Copy()
+    {
+        yield return null;
+    }
 }
