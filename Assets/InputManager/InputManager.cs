@@ -6,25 +6,10 @@ public class InputManager : MonoBehaviour
 {
     public Prop prop;
 
-    //public GameObject cube;
-    //public GameObject capsule;
-    //public GameObject lastObj;
-
-    //public float scaleIntensity = 1.5f;
-
-    //private float maxScale = 2.0f;
-    //private float minScale = 0.1f;
-
     private Dictionary<string, int> keyCellTypeDic;
-
-    private Dictionary<string, bool> KeyDownDic;
-    private bool keyDown = false;
-
-    //private string lastKey = "";
-    //private string nextKey = "";
     
     private float counterBetweenKeys;
-    
+
     void Start()
     {
         prop = GetComponent<Prop>();
@@ -35,24 +20,33 @@ public class InputManager : MonoBehaviour
         keyCellTypeDic["a"] = 0;
         keyCellTypeDic["z"] = 1;
         keyCellTypeDic["e"] = 2;
-        keyCellTypeDic["r"] = 0;
-        keyCellTypeDic["t"] = 1;
-        keyCellTypeDic["y"] = 2;
-        
-        KeyDownDic = new Dictionary<string, bool>();
-        KeyDownDic["k"] = false;
-        KeyDownDic["j"] = false;
-        
-    }
+        keyCellTypeDic["r"] = 3;
+        keyCellTypeDic["t"] = 0;
+        keyCellTypeDic["y"] = 1;
+        keyCellTypeDic["u"] = 3;
+        keyCellTypeDic["i"] = 2;
+        keyCellTypeDic["o"] = 1;
+        keyCellTypeDic["p"] = 0;
 
-    private bool isKeyDown(string key)
-    {
-        return KeyDownDic[key];
-    }
+        keyCellTypeDic["q"] = 3;
+        keyCellTypeDic["s"] = 0;
+        keyCellTypeDic["d"] = 3;
+        keyCellTypeDic["f"] = 2;
+        keyCellTypeDic["g"] = 1;
+        keyCellTypeDic["h"] = 3;
+        keyCellTypeDic["j"] = 0;
+        keyCellTypeDic["k"] = 2;
+        keyCellTypeDic["l"] = 3;
+        keyCellTypeDic["m"] = 2;
 
-    private void setKeyDown(string key, bool status)
-    {
-        KeyDownDic[key] = status;
+        keyCellTypeDic["w"] = 2;
+        keyCellTypeDic["x"] = 1;
+        keyCellTypeDic["c"] = 0;
+        keyCellTypeDic["v"] = 3;
+        keyCellTypeDic["b"] = 2;
+        keyCellTypeDic["n"] = 1;
+
+        keyCellTypeDic["space"] = 0;
     }
 
     private ActionsInput GetActionInputFromTime()
@@ -62,7 +56,7 @@ public class InputManager : MonoBehaviour
         {
             actionsInput = ActionsInput.BiggerCell;
         }
-        else if(counterBetweenKeys < 1.0f)
+        else if (counterBetweenKeys < 1.0f)
         {
             actionsInput = ActionsInput.Copy;
         }
@@ -83,101 +77,173 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log("Update");
-
-        if(!keyDown)
-        {
-            counterBetweenKeys += Time.deltaTime;
-        }
+        counterBetweenKeys += Time.deltaTime;
 
         //////  A  //////
-        if (Input.GetKeyDown("a"))
-        {
-            keyDown = true;
-        }
         if (Input.GetKeyUp("a"))
         {
-            // POP AND DO ACTION
             prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["a"]);
-
-            keyDown = false;
+            counterBetweenKeys = 0.0f;
+        }
+        //////  Z  //////
+        if (Input.GetKeyUp("z"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["z"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  E  //////
+        if (Input.GetKeyUp("e"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["e"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  R  //////
+        if (Input.GetKeyUp("r"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["r"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  T  //////
+        if (Input.GetKeyUp("t"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["t"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  Y  //////
+        if (Input.GetKeyUp("y"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["y"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  U  //////
+        if (Input.GetKeyUp("u"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["u"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  I  //////
+        if (Input.GetKeyUp("i"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["i"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  O  //////
+        if (Input.GetKeyUp("o"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["o"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  P  //////
+        if (Input.GetKeyUp("p"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["p"]);
             counterBetweenKeys = 0.0f;
         }
 
+        //////  Q  //////
+        if (Input.GetKeyUp("q"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["q"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  S  //////
+        if (Input.GetKeyUp("s"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["s"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  D  //////
+        if (Input.GetKeyUp("d"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["d"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  F  //////
+        if (Input.GetKeyUp("f"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["f"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  G  //////
+        if (Input.GetKeyUp("g"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["g"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  H  //////
+        if (Input.GetKeyUp("h"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["h"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  J  //////
+        if (Input.GetKeyUp("j"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["j"]);
+            counterBetweenKeys = 0.0f;
+        }
         //////  K  //////
-        //if (Input.GetKeyDown("k"))
-        //{
-        //    setKeyDown("k", true);
-        //    keyDown = true;
-        //    test_PopNScale();
-        //}
-        //if (Input.GetKey("k"))
-        //{
-        //    test_scale(lastObj);
-        //}
-        //if (Input.GetKeyUp("k"))
-        //{
-        //    setKeyDown("k", false);
-        //    keyDown = false;
-        //    counterBetweenKeys = 0.0f;
-        //}
+        if (Input.GetKeyUp("k"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["k"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  L  //////
+        if (Input.GetKeyUp("l"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["l"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  M  //////
+        if (Input.GetKeyUp("m"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["m"]);
+            counterBetweenKeys = 0.0f;
+        }
+
+        //////  W  //////
+        if (Input.GetKeyUp("w"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["w"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  X  //////
+        if (Input.GetKeyUp("x"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["x"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  C  //////
+        if (Input.GetKeyUp("c"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["c"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  V  //////
+        if (Input.GetKeyUp("v"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["v"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  B  //////
+        if (Input.GetKeyUp("b"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["b"]);
+            counterBetweenKeys = 0.0f;
+        }
+        //////  N  //////
+        if (Input.GetKeyUp("n"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["n"]);
+            counterBetweenKeys = 0.0f;
+        }
+
+        //////  SPACE  //////
+        if (Input.GetKeyUp("space"))
+        {
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["space"]);
+            counterBetweenKeys = 0.0f;
+        }
     }
 
-    //void test_PopNScale()
-    //{
-    //    GameObject cubeObj = Instantiate(lastObj);
-    //    cubeObj.transform.position = new Vector3(lastObj.transform.position.x + 0.5f, lastObj.transform.position.y + 0.5f, lastObj.transform.position.z + 0.5f);
-
-    //    float scale = counterBetweenKeys * scaleIntensity;
-    //    cubeObj.transform.localScale *= Mathf.Clamp(scale, minScale, maxScale);
-
-    //    lastObj = cubeObj;
-    //}
-
-    //void test_PopCube()
-    //{
-    //    GameObject cubeObj = Instantiate(cube);
-
-    //    float x = Random.Range(-10.0f, 10.0f);
-    //    float y = Random.Range(-10.0f, 10.0f);
-    //    float z = Random.Range(-10.0f, 10.0f);
-
-    //    float r = Random.Range(0.0f, 1.0f);
-    //    float g = Random.Range(0.0f, 1.0f);
-    //    float b = Random.Range(0.0f, 1.0f);
-
-    //    cubeObj.transform.position = new Vector3(x, y, z);
-    //    cubeObj.GetComponent<Renderer>().material.color = new Color(r, g, b);
-
-    //    lastObj = cubeObj;
-    //}
-
-    //void test_PopCapsule()
-    //{
-    //    GameObject capsuleObj = Instantiate(capsule);
-
-    //    float x = Random.Range(-10.0f, 10.0f);
-    //    float y = Random.Range(-10.0f, 10.0f);
-    //    float z = Random.Range(-10.0f, 10.0f);
-
-    //    float r = Random.Range(0.0f, 1.0f);
-    //    float g = Random.Range(0.0f, 1.0f);
-    //    float b = Random.Range(0.0f, 1.0f);
-
-    //    capsuleObj.transform.position = new Vector3(x, y, z);
-    //    capsuleObj.GetComponent<Renderer>().material.color = new Color(r, g, b);
-    //}
-
-    //void test_scale(GameObject obj)
-    //{
-    //    obj.transform.localScale = new Vector3(obj.transform.localScale.x + Time.deltaTime, obj.transform.localScale.y + Time.deltaTime, obj.transform.localScale.z + Time.deltaTime);
-    //}
-
-    //void test_color(GameObject obj)
-    //{
-    //    float r = Random.Range(0.0f, 1.0f);
-    //    float g = Random.Range(0.0f, 1.0f);
-    //    float b = Random.Range(0.0f, 1.0f);
-    //    obj.GetComponent<Renderer>().material.color = new Color(r, g, b);
-    //}
 }
