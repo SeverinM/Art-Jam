@@ -44,6 +44,9 @@ public class Prop : MonoBehaviour
 
     [SerializeField]
     AnimationCurve curve;
+
+    [SerializeField]
+    AnimationCurve sizeCurve;
     float pressedSince;
     bool isPressing;
 
@@ -157,7 +160,6 @@ public class Prop : MonoBehaviour
 
         //Recupere index prefab
         int index;
-        Debug.Log(allSpawn);
         allPoints[ind].lastCreated = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), Vector3.Lerp(previous, allPoints[ind].position, Random.value), new Quaternion());
         allPoints[ind].lastCreated.transform.localScale *= (Mathf.PerlinNoise(allPoints[ind].position.x / freqPerlin, allPoints[ind].position.z / freqPerlin) + 0.5f);
         spawnCount--;
@@ -219,14 +221,15 @@ public class Prop : MonoBehaviour
             Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn((int)Random.Range(0, size));
         }
         GameObject gob = Prop.lastCreatedAbsolute;
-        float time = 0.00001f;
-        float previousVal = 0;
-        while (time < 2)
+        float time = 0;
+        float timeMax = 2;
+        float max = Random.Range(1.5f, 2.5f);
+        Vector3 currentSize = gob.transform.localScale;
+        Vector3 finalSize = currentSize * max;
+        while (time < timeMax)
         {
-            float value = Mathf.Log(time * 10);
+            gob.transform.localScale = Vector3.Lerp(currentSize, finalSize, sizeCurve.Evaluate(time / timeMax));
             time += Time.deltaTime;
-            gob.transform.localScale += new Vector3(value - previousVal, value - previousVal, value - previousVal) * 0.05f;
-            previousVal = value;
             yield return null;
         }
 
