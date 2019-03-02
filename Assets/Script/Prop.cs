@@ -21,7 +21,7 @@ public class Prop : MonoBehaviour
     static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
     static Dictionary<int, List<GameObject>> allTypes;
-    static float maxRange = 3;
+    static float maxRange = 2;
     static Vector3 currentDirection;
 
     [SerializeField]
@@ -107,6 +107,7 @@ public class Prop : MonoBehaviour
         }
 
         lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
+        lastCreatedAbsolute.transform.Rotate(Vector3.up, Random.Range(0, 360));
 
         if (lastCreatedAbsolute.GetComponent<MeshRenderer>())
             FilterColor(lastCreatedAbsolute.GetComponent<MeshRenderer>().material, lastCreatedAbsolute.transform.position);
@@ -137,7 +138,7 @@ public class Prop : MonoBehaviour
 
     public void FilterColor(Material mat, Vector3 position)
     {
-        Color sampledColor = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
+        Color sampledColor = Random.ColorHSV(0, 1, 45 / 255.0f, 45 / 255.0f);
         mat.color = sampledColor;
     }
 
@@ -291,13 +292,18 @@ public class Prop : MonoBehaviour
         Vector3 finalSize = currentSize * max;
         while (time < timeMax)
         {
+
+            foreach (SkinnedMeshRenderer skinned in GameObject.FindObjectsOfType<SkinnedMeshRenderer>())
+            {
+                skinned.SetBlendShapeWeight(0, (time / timeMax) * 100);
+            }
             gob.transform.localScale = Vector3.Lerp(currentSize, finalSize, sizeCurve.Evaluate(time / timeMax));
             time += Time.deltaTime;
 
-            if (GetComponent<SkinnedMeshRenderer>())
-            {
-                GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, (time / timeMax) * 100);
-            }
+            //if (GetComponent<SkinnedMeshRenderer>())
+            //{
+            //    GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, (time / timeMax) * 100);
+            //}
             yield return null;
         };
 
