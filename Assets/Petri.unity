@@ -244,7 +244,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 082dcdb2ef63ae3498e4f90cec350d43, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -295,8 +295,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1581886530}
-  - component: {fileID: 1581886532}
-  - component: {fileID: 1581886531}
   - component: {fileID: 1581886533}
   m_Layer: 0
   m_Name: Petri
@@ -319,51 +317,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1581886531
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581886529}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1581886532
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581886529}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 082dcdb2ef63ae3498e4f90cec350d43, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!114 &1581886533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +329,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b0055cf71144a4d867bdb761c2e6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 360
+  allSpawn:
+  - {fileID: 2633557550647742519, guid: 064ff620a2dde4b45abeaf3e6c99c5a7, type: 3}
+  - {fileID: 2523454257229049584, guid: a7e6122efbb171a499f07913a3889e6a, type: 3}
 --- !u!1 &1823006034
 GameObject:
   m_ObjectHideFlags: 0
