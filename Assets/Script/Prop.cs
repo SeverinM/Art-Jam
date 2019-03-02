@@ -154,22 +154,16 @@ public class Prop : MonoBehaviour
 
     void Spawn(int ind)
     {
-        allPoints[ind].randomSecondary = Random.Range(0, 10);
-        Vector3 previous = allPoints[ind > 0 ? ind - 1 : size - 1].position;
-        allPoints[ind].random = 0;
-
-        //Recupere index prefab
+       //Recupere index prefab
         int index;
-        allPoints[ind].lastCreated = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), Vector3.Lerp(previous, allPoints[ind].position, Random.value), new Quaternion());
-        allPoints[ind].lastCreated.transform.localScale *= (Mathf.PerlinNoise(allPoints[ind].position.x / freqPerlin, allPoints[ind].position.z / freqPerlin) + 0.5f);
-        spawnCount--;
+        Vector3 futurePosition = transform.position + (new Vector3(Mathf.Cos(ind * Mathf.Deg2Rad), 0, Mathf.Sin(ind * Mathf.Deg2Rad)) * Length);
+        lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
 
-        if (allPoints[ind].lastCreated.GetComponent<MeshRenderer>())
-            FilterColor(allPoints[ind].lastCreated.GetComponent<MeshRenderer>().material, allPoints[ind].position);
-        if (allPoints[ind].lastCreated.GetComponent<SkinnedMeshRenderer>())
-            FilterColor(allPoints[ind].lastCreated.GetComponent<SkinnedMeshRenderer>().material, allPoints[ind].position);
+        if (lastCreatedAbsolute.GetComponent<MeshRenderer>())
+            FilterColor(lastCreatedAbsolute.GetComponent<MeshRenderer>().material, lastCreatedAbsolute.transform.position);
+        if (lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>())
+            FilterColor(lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().material, lastCreatedAbsolute.transform.position);
 
-        lastCreatedAbsolute = allPoints[ind].lastCreated;
         allTypes[index].Add(lastCreatedAbsolute);
         lastCreatedType = index;
     }
@@ -215,11 +209,30 @@ public class Prop : MonoBehaviour
     {
         Debug.Log("grow");
         if (!Prop.lastCreatedAbsolute)
-            Spawn((int)Random.Range(0, size));
+        {
+            int sample = Random.Range(0, size);
+            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
+            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
+            {
+                sample -= 180;
+                sample %= 360;
+                Debug.Log("demi tour");
+            }
+            Spawn(sample);
+        }
         else
         {
-            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn((int)Random.Range(0, size));
+            int sample = Random.Range(0, size);
+            Vector3 virtualPosition = Prop.lastCreatedAbsolute.transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
+            if (Vector3.Distance(origin, Prop.lastCreatedAbsolute.transform.position) > Vector3.Distance(origin, virtualPosition))
+            {
+                sample -= 180;
+                sample %= 360;
+                Debug.Log("demi tour");
+            }
+            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn(sample);
         }
+
         GameObject gob = Prop.lastCreatedAbsolute;
         float time = 0;
         float timeMax = 2;
@@ -240,7 +253,20 @@ public class Prop : MonoBehaviour
     {
         Debug.Log("copy");
         if (!Prop.lastCreatedAbsolute)
-            Spawn((int)Random.Range(0, size));
+        {
+            int sample = Random.Range(0, size);
+            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
+
+            //La nouvelle position doit etre plus eloigné de la position d'origine
+            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
+            {
+                sample -= 180;
+                sample %= 360;
+                Debug.Log("demi tour");
+            }
+            Spawn(sample);
+        }
+
         GameObject gob = Prop.lastCreatedAbsolute;
         Vector3 firstPosition = gob.transform.position + new Vector3(Random.Range(0.00001f, gob.GetComponent<Prop>().Length), 0, Random.Range(0.00001f, gob.GetComponent<Prop>().Length));
         Vector3 delta = firstPosition - gob.transform.position;
@@ -257,10 +283,32 @@ public class Prop : MonoBehaviour
     {
         Debug.Log("color");
         if (!Prop.lastCreatedAbsolute)
-            Spawn((int)Random.Range(0, size));
+        {
+            int sample = Random.Range(0, size);
+            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
+
+            //La nouvelle position doit etre plus eloigné de la position d'origine
+            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
+            {
+                sample -= 180;
+                sample %= 360;
+                Debug.Log("demi tour");
+            }
+            Spawn(sample);
+        }
         else
         {
-            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn((int)Random.Range(0, size));
+            int sample = Random.Range(0, size);
+            Vector3 virtualPosition = Prop.lastCreatedAbsolute.transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
+
+            //La nouvelle position doit etre plus eloigné de la position d'origine
+            if (Vector3.Distance(origin, Prop.lastCreatedAbsolute.transform.position) > Vector3.Distance(origin, virtualPosition))
+            {
+                sample -= 180;
+                sample %= 360;
+                Debug.Log("demi tour");
+            }
+            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn(sample);
         }
         Color col = new Color(Random.value, Random.value, Random.value, 1);
         foreach(GameObject gob in allTypes[type])

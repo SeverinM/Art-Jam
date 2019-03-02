@@ -67,7 +67,7 @@ MonoBehaviour:
   - {fileID: 8318213141488109585, guid: b74e5abb66b51cb48a0b9629499a63e3, type: 3}
   freqPerlin: 0.01
   stop: 0
-  StartLength: 0.001
+  StartLength: 0.1
 --- !u!1001 &9080902036339130045
 PrefabInstance:
   m_ObjectHideFlags: 0
