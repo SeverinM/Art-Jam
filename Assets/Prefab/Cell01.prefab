@@ -118,15 +118,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   size: 360
   allSpawn:
-  - {fileID: 2519190455100943540, guid: 808d851d3cf6d3a4a891a345d53b1b59, type: 3}
-  - {fileID: 100000, guid: afe26af637e684e01b6080e529c84031, type: 3}
+  - {fileID: 6867538211395595569, guid: 954c26005b82c9f4eb5d191e2c803723, type: 3}
   - {fileID: 8318213141488109585, guid: b74e5abb66b51cb48a0b9629499a63e3, type: 3}
+  - {fileID: 9080902036339095581, guid: 465b5b3594cc349448d9363f46d20555, type: 3}
   freqPerlin: 0.01
   stop: 1
   StartLength: 0.1
