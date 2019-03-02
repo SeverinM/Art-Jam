@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2519190455101370516}
   - component: {fileID: 2519190455087276468}
   - component: {fileID: 2519190455091584884}
+  - component: {fileID: 4870541178593845215}
   m_Layer: 0
   m_Name: Cell01
   m_TagString: Untagged
@@ -103,3 +104,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4870541178593845215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2519190455100943540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b0055cf71144a4d867bdb761c2e6ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  size: 360
+  allSpawn:
+  - {fileID: 2519190455100943540, guid: 808d851d3cf6d3a4a891a345d53b1b59, type: 3}
+  - {fileID: 100000, guid: afe26af637e684e01b6080e529c84031, type: 3}
+  - {fileID: 8318213141488109585, guid: b74e5abb66b51cb48a0b9629499a63e3, type: 3}
+  freqPerlin: 0.01
+  stop: 1
+  StartLength: 0.1

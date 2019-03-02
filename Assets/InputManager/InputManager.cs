@@ -4,8 +4,113 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    public Prop prop;
+
     public GameObject cube;
     public GameObject capsule;
+    public GameObject lastObj;
+
+    public float scaleIntensity = 1.5f;
+
+    public float maxScale = 2.0f;
+    public float minScale = 0.1f;
+
+    private Dictionary<string, int> keyCellTypeDic;
+    private Dictionary<int, float> actionTimeDic;
+
+    private Dictionary<string, bool> KeyDownDic;
+    private bool keyDown = false;
+
+    private string lastKey = "";
+    private string nextKey = "";
+    
+    private float counterBetweenKeys;
+    
+    void Start()
+    {
+        prop = GetComponent<Prop>();
+
+        counterBetweenKeys = 0.0f;
+
+        keyCellTypeDic = new Dictionary<string, int>();
+        keyCellTypeDic["a"] = 0;
+        keyCellTypeDic["z"] = 1;
+        keyCellTypeDic["e"] = 2;
+        keyCellTypeDic["r"] = 0;
+        keyCellTypeDic["t"] = 1;
+        keyCellTypeDic["y"] = 2;
+
+        actionTimeDic = new Dictionary<int, float>();
+        actionTimeDic[0] = 0.5f;
+        actionTimeDic[1] = 0.5f;
+        actionTimeDic[2] = 0.5f;
+        actionTimeDic[3] = 0.5f;
+
+        KeyDownDic = new Dictionary<string, bool>();
+        KeyDownDic["k"] = false;
+        KeyDownDic["j"] = false;
+        
+    }
+
+    private bool isKeyDown(string key)
+    {
+        return KeyDownDic[key];
+    }
+
+    private void setKeyDown(string key, bool status)
+    {
+        KeyDownDic[key] = status;
+    }
+
+    void Update()
+    {
+        if(!keyDown)
+        {
+            counterBetweenKeys += Time.deltaTime;
+        }
+
+        //////  A  //////
+        if (Input.GetKeyDown("a"))
+        {
+            keyDown = true;
+        }
+        if (Input.GetKeyUp("a"))
+        {
+            // TO DO ACTION
+
+            keyDown = false;
+            counterBetweenKeys = 0.0f;
+        }
+
+        //////  K  //////
+        if (Input.GetKeyDown("k"))
+        {
+            setKeyDown("k", true);
+            keyDown = true;
+            test_PopNScale();
+        }
+        if (Input.GetKey("k"))
+        {
+            test_scale(lastObj);
+        }
+        if (Input.GetKeyUp("k"))
+        {
+            setKeyDown("k", false);
+            keyDown = false;
+            counterBetweenKeys = 0.0f;
+        }
+    }
+
+    void test_PopNScale()
+    {
+        GameObject cubeObj = Instantiate(lastObj);
+        cubeObj.transform.position = new Vector3(lastObj.transform.position.x + 0.5f, lastObj.transform.position.y + 0.5f, lastObj.transform.position.z + 0.5f);
+
+        float scale = counterBetweenKeys * scaleIntensity;
+        cubeObj.transform.localScale *= Mathf.Clamp(scale, minScale, maxScale);
+
+        lastObj = cubeObj;
+    }
 
     void test_PopCube()
     {
@@ -21,6 +126,8 @@ public class InputManager : MonoBehaviour
 
         cubeObj.transform.position = new Vector3(x, y, z);
         cubeObj.GetComponent<Renderer>().material.color = new Color(r, g, b);
+
+        lastObj = cubeObj;
     }
 
     void test_PopCapsule()
@@ -39,16 +146,16 @@ public class InputManager : MonoBehaviour
         capsuleObj.GetComponent<Renderer>().material.color = new Color(r, g, b);
     }
 
-    void Update()
+    void test_scale(GameObject obj)
     {
-        if (Input.GetKeyUp("k"))
-        {
-            test_PopCube();
-        }
+        obj.transform.localScale = new Vector3(obj.transform.localScale.x + Time.deltaTime, obj.transform.localScale.y + Time.deltaTime, obj.transform.localScale.z + Time.deltaTime);
+    }
 
-        if (Input.GetKeyUp("j"))
-        {
-            test_PopCapsule();
-        }
+    void test_color(GameObject obj)
+    {
+        float r = Random.Range(0.0f, 1.0f);
+        float g = Random.Range(0.0f, 1.0f);
+        float b = Random.Range(0.0f, 1.0f);
+        obj.GetComponent<Renderer>().material.color = new Color(r, g, b);
     }
 }
