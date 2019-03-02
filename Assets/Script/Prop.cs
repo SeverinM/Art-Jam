@@ -3,26 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-struct PointPropagation
-{
-    //Position du point sur la surface
-    public Vector3 position;
-
-    //Pour faire avancer le point plus vite que les autres
-    public float modifier;
-
-    //Utilisé pour le spawn
-    public float random;
-
-    public float randomSecondary;
-    public GameObject lastCreated;
-}
-
-struct Gaussian
-{
-    public float variance;
-    public float middle;
-}
 
 public enum ActionsInput
 {
@@ -35,12 +15,14 @@ public enum ActionsInput
 public class Prop : MonoBehaviour
 {
     float Duration = 10;
-    PointPropagation[] allPoints;
 
     Color color1;
     Color color2;
     static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
+    static Dictionary<int, List<GameObject>> allTypes;
+    static float maxRange = 3;
+    static Vector3 currentDirection;
 
     [SerializeField]
     AnimationCurve curve;
@@ -62,10 +44,7 @@ public class Prop : MonoBehaviour
     float freqPerlin = 0.01f;
 
     //Tous les GO de chaque type
-    static Dictionary<int, List<GameObject>> allTypes;
-    static float maxRange = 10;
 
-    List<Gaussian> allGauss;
     int spawnCount = 3;
 
     [SerializeField]
@@ -83,8 +62,14 @@ public class Prop : MonoBehaviour
         {
             buff = new Buffer();
         }
-        color1 = new Color(Random.value, Random.value, Random.value, 1);
-        color2 = new Color(Random.value, Random.value, Random.value, 1);
+        
+        if (currentDirection == Vector3.zero)
+        {
+            float angle = Random.Range(0, 359);
+            currentDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+        }
+
+
         if (allTypes == null)
         {
             allTypes = new Dictionary<int, List<GameObject>>();
@@ -98,85 +83,38 @@ public class Prop : MonoBehaviour
         origin = transform.position;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Gaussian gauss = new Gaussian();
-        allGauss = new List<Gaussian>();
-
-        for (int i = 0; i < 5; i++)
-        {
-            gauss.variance = Random.Range(1, 10);
-            gauss.middle = Random.Range(0, 360);
-            //allGauss.Add(gauss);
-        }
-
-        allPoints = new PointPropagation[size];
-
-        for (int i = 0; i < size; i++)
-        {
-            float angle = i * ((Mathf.PI * 2) / size);
-            allPoints[i].position = (new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * StartLength) + transform.position;
-        }        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Duration -= Time.deltaTime;
-
-        if (isPressing) pressedSince += Time.deltaTime;
-
-        for (int i = 0; i < size; i++)
-        {
-            allPoints[i].random += Random.value * Time.deltaTime;
-        }
-
-        if (spawnCount == 0)
-            Destroy(this);
-    }
-
     T ReturnRandomList<T>(List<T> list, out int index)
     {
         index = Random.Range(0, list.Count);
         return list[index];
     }
 
-    float CalculateGaussian(float x, Gaussian gauss)
+    void Spawn()
     {
-        float v1 = Mathf.Pow(((x - gauss.middle) / gauss.variance), 2) / -2;
-        float v2 = Mathf.Exp(v1);
-        float v3 = (1 / (gauss.variance * Mathf.Sqrt(2 * Mathf.PI))) * v2;
-        return v3;
-    }
+        currentDirection = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * currentDirection;
+        Debug.Log(currentDirection);
 
-    Vector3 Sample(float angle)
-    {
-        float frac = angle - Mathf.Floor(angle);
-        int ang = (int)angle;
-        return Vector3.Lerp(allPoints[ang - 1].position , allPoints[ang].position, frac);
-
-    }
-
-    void Spawn(int ind)
-    {
        //Recupere index prefab
         int index;
-        Vector3 futurePosition = transform.position + (new Vector3(Mathf.Cos(ind * Mathf.Deg2Rad), 0, Mathf.Sin(ind * Mathf.Deg2Rad)) * Length);
+        Vector3 futurePosition = transform.position + (currentDirection.normalized * Length);
 
-        int countError = 0;
-        while (Vector3.Distance(new Vector3(0,0,0) , futurePosition + new Vector3(Length, 0, Length)) > maxRange && countError++ < 20)
+        if (Vector3.Distance(new Vector3(0,0,0) , futurePosition + new Vector3(Length, 0, Length)) > maxRange)
         {
-            ind += 10;
-            ind %= 360;
-            futurePosition = transform.position + (new Vector3(Mathf.Cos(ind * Mathf.Deg2Rad), 0, Mathf.Sin(ind * Mathf.Deg2Rad)) * Length);
+            Debug.Log(currentDirection);
+            float randomVal = (Random.Range(90, 179) * (Random.value > 0.5 ? 1 : -1));
+            currentDirection = Quaternion.AngleAxis(randomVal, Vector3.up) * currentDirection;
+            futurePosition = transform.position + (currentDirection.normalized * Length);
         }
+
         lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
 
         if (lastCreatedAbsolute.GetComponent<MeshRenderer>())
             FilterColor(lastCreatedAbsolute.GetComponent<MeshRenderer>().material, lastCreatedAbsolute.transform.position);
         if (lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>())
+        {
             FilterColor(lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().material, lastCreatedAbsolute.transform.position);
+        }
+            
 
         allTypes[index].Add(lastCreatedAbsolute);
         lastCreatedType = index;
@@ -189,19 +127,13 @@ public class Prop : MonoBehaviour
         {
             lastCreatedAbsolute = buff.Stored;
             Vector3 delta = transform.position;
-            delta = Quaternion.AngleAxis(Random.Range(-30, 30), Vector3.up) * delta;
+            currentDirection = Quaternion.AngleAxis(90 * (Random.value > 0.5 ? 1 : -1), Vector3.up) * (lastCreatedAbsolute.transform.position - origin);
             futurePosition = lastCreatedAbsolute.transform.position + (delta.normalized * Length);
             lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
         }
     }
 
     #region modification
-    public void UpdateGauss(int index)
-    {
-        float sum = 0;
-        allGauss.ForEach(x => sum += CalculateGaussian(Mathf.Abs(index - size / 2), x));
-        allPoints[index].modifier = 0.001f + (sum * 0.01f);
-    }
 
     public void FilterColor(Material mat, Vector3 position)
     {
@@ -234,18 +166,15 @@ public class Prop : MonoBehaviour
 
     IEnumerator Grow()
     {
-        Debug.Log("grow");
         if (!Prop.lastCreatedAbsolute)
         {
             int sample = Random.Range(0, size);
             Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
             if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
             {
-                sample -= 180;
-                sample %= 360;
-                Debug.Log("demi tour");
+                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
             }
-            Spawn(sample);
+            Spawn();
         }
         else
         {
@@ -253,11 +182,9 @@ public class Prop : MonoBehaviour
             Vector3 virtualPosition = Prop.lastCreatedAbsolute.transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
             if (Vector3.Distance(origin, Prop.lastCreatedAbsolute.transform.position) > Vector3.Distance(origin, virtualPosition))
             {
-                sample -= 180;
-                sample %= 360;
-                Debug.Log("demi tour");
+                currentDirection = Quaternion.AngleAxis((Random.Range(90, 179) * Random.value > 0.5 ? 1 : -1), Vector3.up) * currentDirection;
             }
-            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn(sample);
+            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn();
         }
 
         GameObject gob = Prop.lastCreatedAbsolute;
@@ -278,7 +205,6 @@ public class Prop : MonoBehaviour
 
     IEnumerator Copy()
     {
-        Debug.Log("copy");
         if (!Prop.lastCreatedAbsolute)
         {
             int sample = Random.Range(0, size);
@@ -287,11 +213,9 @@ public class Prop : MonoBehaviour
             //La nouvelle position doit etre plus eloigné de la position d'origine
             if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
             {
-                sample -= 180;
-                sample %= 360;
-                Debug.Log("demi tour");
+                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
             }
-            Spawn(sample);
+            Spawn();
         }
 
         GameObject gob = Prop.lastCreatedAbsolute;
@@ -308,7 +232,6 @@ public class Prop : MonoBehaviour
 
     IEnumerator SetColor(int type)
     {
-        Debug.Log("color");
         if (!Prop.lastCreatedAbsolute)
         {
             int sample = Random.Range(0, size);
@@ -317,10 +240,9 @@ public class Prop : MonoBehaviour
             //La nouvelle position doit etre plus eloigné de la position d'origine
             if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
             {
-                sample -= 180;
-                sample %= 360;
+                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
             }
-            Spawn(sample);
+            Spawn();
         }
         else
         {
@@ -330,10 +252,9 @@ public class Prop : MonoBehaviour
             //La nouvelle position doit etre plus eloigné de la position d'origine
             if (Vector3.Distance(origin, Prop.lastCreatedAbsolute.transform.position) > Vector3.Distance(origin, virtualPosition))
             {
-                sample -= 180;
-                sample %= 360;
+                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
             }
-            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn(sample);
+            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn();
         }
         Color col = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
         foreach (GameObject gob in allTypes[type])
@@ -348,7 +269,39 @@ public class Prop : MonoBehaviour
 
     IEnumerator SetShape()
     {
-        Debug.Log("shape");
+
+        if (!Prop.lastCreatedAbsolute)
+        {
+            int sample = Random.Range(0, size);
+            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
+
+            //La nouvelle position doit etre plus eloigné de la position d'origine
+            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
+            {
+                //Rotation 180
+                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
+            }
+            Spawn();
+        }
+        GameObject gob = Prop.lastCreatedAbsolute;
+        float time = 0;
+        float timeMax = 2;
+        float max = Random.Range(0.5f, 1.5f);
+        Vector3 currentSize = gob.transform.localScale;
+        Vector3 finalSize = currentSize * max;
+        while (time < timeMax)
+        {
+            gob.transform.localScale = Vector3.Lerp(currentSize, finalSize, sizeCurve.Evaluate(time / timeMax));
+            time += Time.deltaTime;
+
+            if (GetComponent<SkinnedMeshRenderer>())
+            {
+                GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, (time / timeMax) * 100);
+            }
+            yield return null;
+        };
+
+        
         yield return null;
     }
 }

@@ -14,7 +14,7 @@ public class Buffer
     public Buffer()
     {
         currentValue = 0;
-        maxCount = (int)Random.Range(8, 12);
+        maxCount = (int)Random.Range(10, 12);
     }
 
     public void TryStore(GameObject gob)
@@ -24,7 +24,7 @@ public class Buffer
         {
             count = 0;
             stored = gob;
-            maxCount = (int)Random.Range(8, 12);
+            maxCount = (int)Random.Range(10, 12);
         }
     }
 
