@@ -60,11 +60,11 @@ public class InputManager : MonoBehaviour
         ActionsInput actionsInput = ActionsInput.BiggerCell;
         if (counterBetweenKeys < 0.5f)
         {
-            actionsInput = ActionsInput.SetColorPerType;
+            actionsInput = ActionsInput.BiggerCell;
         }
         else if(counterBetweenKeys < 1.0f)
         {
-            actionsInput = ActionsInput.BiggerCell;
+            actionsInput = ActionsInput.Copy;
         }
         else if (counterBetweenKeys < 1.5f)
         {
@@ -72,7 +72,11 @@ public class InputManager : MonoBehaviour
         }
         else if (counterBetweenKeys < 2.0f)
         {
-            actionsInput = ActionsInput.Copy;
+            actionsInput = ActionsInput.SetColorPerType;
+        }
+        else
+        {
+            actionsInput = ActionsInput.SetColorPerType;
         }
         return actionsInput;
     }
@@ -93,12 +97,8 @@ public class InputManager : MonoBehaviour
         }
         if (Input.GetKeyUp("a"))
         {
-            // GET ACTION WITH TIME
-            
-
-            Debug.Log("Key : a");
             // POP AND DO ACTION
-            prop.InterpretInput(ActionsInput.Copy, keyCellTypeDic["a"]);
+            prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["a"]);
 
             keyDown = false;
             counterBetweenKeys = 0.0f;
