@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d047814dae8c78c43b1487704e251031, type: 3}
+  m_Name: D3CDC74D-9E73-423B-B867-927CAF1EAAA2
+  m_EditorClassIdentifier: 
+  objectName: State_Amb_InGame
+  id: 2630825291
+  guid: D3CDC74D-9E73-423B-B867-927CAF1EAAA2
