@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}" SchemaVersion="89">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_Drone" ID="{45F56F12-0C36-4E4F-B7EF-D7D546ED99CD}">
+					<ChildrenList>
+						<Action Name="" ID="{D8229076-14B6-41E8-A57F-62B2DCE42684}" ShortID="549632646">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Switch_Amb" ID="{9EF985B6-40F9-4C81-B5BB-A674C232B7BF}" WorkUnitID="{AAD39B5D-CCBD-48A5-89E7-B1D4AFB4E219}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_Drone" ID="{2A2F5421-2AC5-45EB-B35B-D4D665448C92}">
+					<ChildrenList>
+						<Action Name="" ID="{6D403B74-3C43-4081-9769-BF6D1B15B9CD}" ShortID="985332097">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Switch_Amb" ID="{9EF985B6-40F9-4C81-B5BB-A674C232B7BF}" WorkUnitID="{AAD39B5D-CCBD-48A5-89E7-B1D4AFB4E219}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Mic_01" ID="{E768D18F-7372-4074-AE0C-8F761610589E}">
+					<ChildrenList>
+						<Action Name="" ID="{23E07BAF-D627-439B-93A8-2B464323A908}" ShortID="531472410">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Microbe_01" ID="{83FC3D3F-5FB6-4FE1-A1F9-9D4A85CF76F5}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Morphing" ID="{815AFE97-4F89-4756-90CC-44B0DF04DE17}">
+					<ChildrenList>
+						<Action Name="" ID="{95E994C4-4151-4950-8CDE-FD06517DA10E}" ShortID="340799996">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Morphing" ID="{D21EA3AA-7BED-4E43-91E7-9276F616C729}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Mic_02" ID="{D0395219-F865-44AB-8430-A05E7D18003E}">
+					<ChildrenList>
+						<Action Name="" ID="{59ACCFBB-670F-481A-96F2-558B9C018551}" ShortID="205629871">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Microbe_02" ID="{8E1D01DE-AAD1-482E-A915-22CB840BC9B6}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Color" ID="{26597279-CFB9-4511-953B-A012D29D1A83}">
+					<ChildrenList>
+						<Action Name="" ID="{31F1127F-ED92-4B58-B15F-51C4B700ECDB}" ShortID="760074787">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Color" ID="{E44F846C-B58C-4D70-AF1A-A62562B81506}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Mic_03" ID="{66630136-081B-48F9-9F09-49A00E1DE06A}">
+					<ChildrenList>
+						<Action Name="" ID="{86640BD6-5FEF-4613-9476-7FB3ED56618E}" ShortID="583190607">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Microbe_03" ID="{2B57DD4E-AEE0-45FF-A825-F5CBFFDE0C04}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Grandir" ID="{7B30E474-C2A4-4BDC-AC46-BD92E6809540}">
+					<ChildrenList>
+						<Action Name="" ID="{57FE7331-2FFC-4BB4-B670-D8572F5F4BBE}" ShortID="257149992">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Grandir" ID="{AD8112FE-3E4F-43F0-BC57-2DC7EB4DD4CD}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Mic_04" ID="{A1EB7949-DF34-4FA0-97E8-5520B77514A2}">
+					<ChildrenList>
+						<Action Name="" ID="{64F5F5A2-FC33-4B28-92EF-B01694471F69}" ShortID="445066185">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Microbe_04" ID="{CE89B8D0-525B-46A3-AE38-4C1366E609FE}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Copy" ID="{961E95AF-FD70-47EC-9C40-58684B375F99}">
+					<ChildrenList>
+						<Action Name="" ID="{E47F9976-4686-44E2-98A1-14C8705246B2}" ShortID="21400718">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Copying" ID="{05820CAC-9A9C-42C5-BE44-5C4DEBBE2E11}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Mic_05" ID="{C7596287-ACCA-4E14-A112-B63FD2ABF6BA}">
+					<ChildrenList>
+						<Action Name="" ID="{9194E54A-70A7-4AD4-ADC4-A1CA1E211111}" ShortID="520251692">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Microbe_05" ID="{1EAB99E7-A197-4358-A68D-5490393DADCD}" WorkUnitID="{732BD922-C584-487D-9DF2-893CE835A401}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

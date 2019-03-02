@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{5B3F9921-EBED-4298-897C-E451783BAD13}" SchemaVersion="89">
+	<SoundcasterSessions>
+		<WorkUnit Name="Default Work Unit" ID="{5B3F9921-EBED-4298-897C-E451783BAD13}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundcasterSession Name="Soundcaster Game" ID="{EA4E0B79-1F7B-4D4A-8D86-CFAF2CF78D8B}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="Play_Drone" ID="{45F56F12-0C36-4E4F-B7EF-D7D546ED99CD}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Mic_05" ID="{C7596287-ACCA-4E14-A112-B63FD2ABF6BA}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="0" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Mic_01" ID="{E768D18F-7372-4074-AE0C-8F761610589E}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Mic_02" ID="{D0395219-F865-44AB-8430-A05E7D18003E}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Mic_03" ID="{66630136-081B-48F9-9F09-49A00E1DE06A}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="1" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Mic_04" ID="{A1EB7949-DF34-4FA0-97E8-5520B77514A2}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="1" Y="3"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Morphing" ID="{815AFE97-4F89-4756-90CC-44B0DF04DE17}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Color" ID="{26597279-CFB9-4511-953B-A012D29D1A83}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="2" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Copy" ID="{961E95AF-FD70-47EC-9C40-58684B375F99}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="2" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Grandir" ID="{7B30E474-C2A4-4BDC-AC46-BD92E6809540}" WorkUnitID="{A6C78077-5A9B-4A4A-8D05-F6635E00C931}"/>
+							<Position X="2" Y="3"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true">
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Turbulence" ID="{EDA87B19-73AA-40A0-9F19-2073606DB710}"/>
+							<Value>6</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Proximity_FA_SSGrain" ID="{05F1ABB4-7338-42BC-A378-B1E2B12EE3CB}"/>
+							<Value>100</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Simulation_FA_SSGrain" ID="{71905071-0A79-42FE-9CD6-C631171DC3A4}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Playback_Rate" ID="{28387EE3-C13A-4316-B9C3-DB5C521624AF}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Month" ID="{09E2B445-C4A3-447F-B3CA-818A1D925EF7}"/>
+							<Value>6</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="LoPass_Grandir" ID="{2DE43660-BC42-44C0-991B-10C3D50D4242}"/>
+							<Value>9.49390528546351E-312</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="RPM" ID="{9112AA05-F577-44FD-9F4E-4424158129E6}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_RPM" ID="{A34890AB-B9D5-4526-A64D-5290C43EF2DC}"/>
+							<Value>50</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Immersion_FA_SSGrain" ID="{3F41E622-166C-4532-BEF7-1DC9FF7EAB94}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Instrument_FA_SSGrain" ID="{6279AF44-C082-4608-981E-9A63D1EE7555}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Volume_Grandir" ID="{06E317C6-F3BA-4621-97D2-6E0E6EDC670F}"/>
+							<Value>100</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Fury" ID="{A2AE79DC-CA3A-46BA-9652-9986C322A87B}"/>
+							<Value>50</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Size" ID="{1329EBEF-A193-472E-A38C-64668B494879}"/>
+							<Value>50</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Storm" ID="{E93F8CDB-06D1-4737-ACAF-7CD44BBED783}"/>
+							<Value>75</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="Density_FA_SSGrain" ID="{63B3F29E-04F3-4887-BA1A-4D7694644B24}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Presence" ID="{E3B7811A-7B2F-490F-B44F-5FE51B468041}"/>
+							<Value>75</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="RPM_FA_SSGrain" ID="{C092E65B-E5C4-4C55-8A68-576E98BBFF39}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_TimeOfDay" ID="{536FA72C-8C7E-4C8B-AE03-EF34FDADC314}"/>
+							<Value>6</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Freefall" ID="{2F2DFE37-4F9E-4D94-83D8-53CCA39781AD}"/>
+							<Value>75</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="SS_Air_Fear" ID="{F72E0659-4346-4E1C-A1B1-DAB46A05101E}"/>
+							<Value>50</Value>
+						</RTPCValue>
+					</RTPCValueList>
+					<CurrentStateList ShowAll="true">
+						<CurrentStateRef Name="Amb_InGame" ID="{65FF8DA7-2986-4C46-87D9-EF853FDCC8EF}"/>
+					</CurrentStateList>
+					<CurrentSwitchList ShowAll="true"/>
+				</SoundcasterSession>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundcasterSessions>
+</WwiseDocument>
