@@ -40,7 +40,7 @@ public class Prop : MonoBehaviour
     Color color1;
     Color color2;
     static GameObject lastCreatedAbsolute;
-    int lastCreatedType;
+    static int lastCreatedType;
 
     [SerializeField]
     AnimationCurve curve;
@@ -59,7 +59,7 @@ public class Prop : MonoBehaviour
     float freqPerlin = 0.01f;
 
     //Tous les GO de chaque type
-    static Dictionary<int, List<GameObject>> allTypes = new Dictionary<int, List<GameObject>>();
+    static Dictionary<int, List<GameObject>> allTypes;
 
     List<Gaussian> allGauss;
     int spawnCount = 3;
@@ -69,14 +69,19 @@ public class Prop : MonoBehaviour
 
     [SerializeField]
     float StartLength = 0.001f;
+    public float Length => StartLength;
 
     private void Awake()
     {
         color1 = new Color(Random.value, Random.value, Random.value, 1);
         color2 = new Color(Random.value, Random.value, Random.value, 1);
-        for (int i = 0; i < allSpawn.Count; i++)
+        if (allTypes == null)
         {
-            allTypes[i] = new List<GameObject>();
+            allTypes = new Dictionary<int, List<GameObject>>();
+            for (int i = 0; i < allSpawn.Count; i++)
+            {
+                allTypes[i] = new List<GameObject>();
+            }
         }
 
         lastCreatedType = -1;
@@ -101,11 +106,8 @@ public class Prop : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
             float angle = i * ((Mathf.PI * 2) / size);
-            allPoints[i].position = (new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * StartLength) + origin;
-            UpdateGauss(i);
-            allPoints[i].random = Random.Range(-10, 5);
-            allPoints[i].randomSecondary = Random.Range(5, 30);
-        }
+            allPoints[i].position = (new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * StartLength) + transform.position;
+        }        
     }
 
     // Update is called once per frame
@@ -117,9 +119,8 @@ public class Prop : MonoBehaviour
 
         for (int i = 0; i < size; i++)
         {
-            allPoints[i].position += (allPoints[i].position - origin).normalized * (allPoints[i].modifier) * (stop ? 0 : 1); 
             allPoints[i].random += Random.value * Time.deltaTime;
-            //Debug.DrawLine(allPoints[i].position, allPoints[i > 0 ? i - 1 : size - 1].position,Color.red);
+            Debug.DrawLine(allPoints[i].position, allPoints[i > 0 ? i - 1 : size - 1].position,Color.red);
         }
 
         if (spawnCount == 0)
@@ -156,6 +157,7 @@ public class Prop : MonoBehaviour
 
         //Recupere index prefab
         int index;
+        Debug.Log(allSpawn);
         allPoints[ind].lastCreated = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), Vector3.Lerp(previous, allPoints[ind].position, Random.value), new Quaternion());
         allPoints[ind].lastCreated.transform.localScale *= (Mathf.PerlinNoise(allPoints[ind].position.x / freqPerlin, allPoints[ind].position.z / freqPerlin) + 0.5f);
         spawnCount--;
@@ -168,12 +170,6 @@ public class Prop : MonoBehaviour
         lastCreatedAbsolute = allPoints[ind].lastCreated;
         allTypes[index].Add(lastCreatedAbsolute);
         lastCreatedType = index;
-        if (lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>())
-        {
-            lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 1);
-            lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(1, 1);
-            lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(2, 1);
-        }
     }
 
     #region modification
@@ -197,20 +193,39 @@ public class Prop : MonoBehaviour
             case (ActionsInput.BiggerCell):
                 StartCoroutine(Grow());
                 break;
+
+            case (ActionsInput.Copy):
+                StartCoroutine(Copy());
+                break;
+
+            case (ActionsInput.SetColorPerType):
+                StartCoroutine(SetColor(type));
+                break;
+
+            case (ActionsInput.ModifyShape):
+                StartCoroutine(SetShape());
+                break;
         }
     }
     #endregion
 
     IEnumerator Grow()
     {
+        Debug.Log("grow");
+        if (!Prop.lastCreatedAbsolute)
+            Spawn((int)Random.Range(0, size));
+        else
+        {
+            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn((int)Random.Range(0, size));
+        }
         GameObject gob = Prop.lastCreatedAbsolute;
-        float time = 0;
+        float time = 0.00001f;
         float previousVal = 0;
         while (time < 2)
         {
             float value = Mathf.Log(time * 10);
             time += Time.deltaTime;
-            gob.transform.localScale += new Vector3(value - previousVal, value - previousVal, value - previousVal);
+            gob.transform.localScale += new Vector3(value - previousVal, value - previousVal, value - previousVal) * 0.05f;
             previousVal = value;
             yield return null;
         }
@@ -218,8 +233,46 @@ public class Prop : MonoBehaviour
         yield return null;
     }
 
-    IEnumerable Copy()
+    IEnumerator Copy()
     {
+        Debug.Log("copy");
+        if (!Prop.lastCreatedAbsolute)
+            Spawn((int)Random.Range(0, size));
+        GameObject gob = Prop.lastCreatedAbsolute;
+        Vector3 firstPosition = gob.transform.position + new Vector3(Random.Range(0.00001f, gob.GetComponent<Prop>().Length), 0, Random.Range(0.00001f, gob.GetComponent<Prop>().Length));
+        Vector3 delta = firstPosition - gob.transform.position;
+        int index;
+        for (int i = 0; i < 3; i++)
+        {
+            delta = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * delta;
+            (Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), firstPosition + delta, new Quaternion()) as GameObject).transform.localScale *= Random.Range(0.1f, 1);
+        }
+        yield return null;
+    }
+
+    IEnumerator SetColor(int type)
+    {
+        Debug.Log("color");
+        if (!Prop.lastCreatedAbsolute)
+            Spawn((int)Random.Range(0, size));
+        else
+        {
+            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn((int)Random.Range(0, size));
+        }
+        Color col = new Color(Random.value, Random.value, Random.value, 1);
+        foreach(GameObject gob in allTypes[type])
+        {
+            if (gob.GetComponent<MeshRenderer>())
+                gob.GetComponent<MeshRenderer>().material.color = col;
+            if (gob.GetComponent<SkinnedMeshRenderer>())
+                gob.GetComponent<SkinnedMeshRenderer>().material.color = col;
+        }
+        yield return null;
+    }
+
+    IEnumerator SetShape()
+    {
+        Debug.Log("shape");
         yield return null;
     }
 }
