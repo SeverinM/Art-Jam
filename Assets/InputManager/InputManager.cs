@@ -82,28 +82,24 @@ public class InputManager : MonoBehaviour
         //////  A  //////
         if (Input.GetKeyUp("a"))
         {
-            AkSoundEngine.PostEvent("Play_Mic_01", Camera.main.gameObject);
             prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["a"]);
             counterBetweenKeys = 0.0f;
         }
         //////  Z  //////
         if (Input.GetKeyUp("z"))
         {
-            AkSoundEngine.PostEvent("Play_Mic_02", Camera.main.gameObject);
             prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["z"]);
             counterBetweenKeys = 0.0f;
         }
         //////  E  //////
         if (Input.GetKeyUp("e"))
         {
-            AkSoundEngine.PostEvent("Play_Mic_03", Camera.main.gameObject);
             prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["e"]);
             counterBetweenKeys = 0.0f;
         }
         //////  R  //////
         if (Input.GetKeyUp("r"))
         {
-            AkSoundEngine.PostEvent("Play_Mic_04", Camera.main.gameObject);
             prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["r"]);
             counterBetweenKeys = 0.0f;
         }
