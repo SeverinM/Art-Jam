@@ -21,7 +21,7 @@ public class Prop : MonoBehaviour
     static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
     static Dictionary<int, List<GameObject>> allTypes;
-    static float maxRange = 2;
+    static float maxRange = 5;
     static Vector3 currentDirection;
 
     [SerializeField]
@@ -129,6 +129,7 @@ public class Prop : MonoBehaviour
             lastCreatedAbsolute = buff.Stored;
             Vector3 delta = transform.position;
             currentDirection = Quaternion.AngleAxis(90 * (Random.value > 0.5 ? 1 : -1), Vector3.up) * (lastCreatedAbsolute.transform.position - origin);
+            currentDirection.y = 0;
             futurePosition = lastCreatedAbsolute.transform.position + (delta.normalized * Length);
             lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
         }
@@ -169,22 +170,10 @@ public class Prop : MonoBehaviour
     {
         if (!Prop.lastCreatedAbsolute)
         {
-            int sample = Random.Range(0, size);
-            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
-            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
-            {
-                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
-            }
             Spawn();
         }
         else
         {
-            int sample = Random.Range(0, size);
-            Vector3 virtualPosition = Prop.lastCreatedAbsolute.transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
-            if (Vector3.Distance(origin, Prop.lastCreatedAbsolute.transform.position) > Vector3.Distance(origin, virtualPosition))
-            {
-                currentDirection = Quaternion.AngleAxis((Random.Range(90, 179) * Random.value > 0.5 ? 1 : -1), Vector3.up) * currentDirection;
-            }
             Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn();
         }
 
@@ -208,14 +197,6 @@ public class Prop : MonoBehaviour
     {
         if (!Prop.lastCreatedAbsolute)
         {
-            int sample = Random.Range(0, size);
-            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
-
-            //La nouvelle position doit etre plus eloigné de la position d'origine
-            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
-            {
-                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
-            }
             Spawn();
         }
 
@@ -235,26 +216,10 @@ public class Prop : MonoBehaviour
     {
         if (!Prop.lastCreatedAbsolute)
         {
-            int sample = Random.Range(0, size);
-            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
-
-            //La nouvelle position doit etre plus eloigné de la position d'origine
-            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
-            {
-                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
-            }
             Spawn();
         }
         else
         {
-            int sample = Random.Range(0, size);
-            Vector3 virtualPosition = Prop.lastCreatedAbsolute.transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
-
-            //La nouvelle position doit etre plus eloigné de la position d'origine
-            if (Vector3.Distance(origin, Prop.lastCreatedAbsolute.transform.position) > Vector3.Distance(origin, virtualPosition))
-            {
-                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
-            }
             Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn();
         }
         Color col = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
@@ -273,15 +238,6 @@ public class Prop : MonoBehaviour
 
         if (!Prop.lastCreatedAbsolute)
         {
-            int sample = Random.Range(0, size);
-            Vector3 virtualPosition = transform.position + (new Vector3(Mathf.Cos(sample * Mathf.Deg2Rad), 0, Mathf.Sin(sample * Mathf.Deg2Rad)) * Length);
-
-            //La nouvelle position doit etre plus eloigné de la position d'origine
-            if (Vector3.Distance(origin, transform.position) > Vector3.Distance(origin, virtualPosition))
-            {
-                //Rotation 180
-                currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
-            }
             Spawn();
         }
         GameObject gob = Prop.lastCreatedAbsolute;
