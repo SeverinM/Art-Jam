@@ -15,6 +15,7 @@ struct PointPropagation
     public float random;
 
     public float randomSecondary;
+    public GameObject lastCreated;
 }
 
 struct Gaussian
@@ -27,14 +28,36 @@ public class Prop : MonoBehaviour
 {
     PointPropagation[] allPoints;
 
+    Color color1;
+    Color color2;
+    GameObject lastCreatedAbsolute;
+
+    [SerializeField]
+    AnimationCurve curve;
+    float pressedSince;
+    bool isPressing;
+
     [SerializeField]
     int size;
+
     Vector3 origin;
 
     [SerializeField]
     List<GameObject> allSpawn;
 
+    [SerializeField]
+    float freqPerlin = 0.01f;
+
     List<Gaussian> allGauss;
+    float speed;
+
+    private void Awake()
+    {
+        color1 = new Color(Random.value, Random.value, Random.value, 1);
+        color2 = new Color(Random.value, Random.value, Random.value, 1);
+
+        speed = 0.1f;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -58,25 +81,18 @@ public class Prop : MonoBehaviour
             allPoints[i].position = new Vector3(Mathf.Cos(angle),0, Mathf.Sin(angle)) + origin;
             UpdateGauss(i);
             allPoints[i].random = Random.Range(-10, 5);
-            allPoints[i].randomSecondary = Random.Range(0, 10);
+            allPoints[i].randomSecondary = Random.Range(5, 30);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            AddVerticalExtension(5);
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            AddHorizontalExtension(5);
-        }
+        if (isPressing) pressedSince += Time.deltaTime;
 
         for (int i = 0; i < size; i++)
         {
-            allPoints[i].position += (allPoints[i].position - origin).normalized * allPoints[i].modifier;
+            allPoints[i].position += (allPoints[i].position - origin).normalized * (allPoints[i].modifier + curve.Evaluate(pressedSince));
             allPoints[i].random += Random.value * Time.deltaTime;
             Debug.DrawLine(allPoints[i].position, allPoints[i > 0 ? i - 1 : size - 1].position,Color.red);
 
@@ -90,7 +106,10 @@ public class Prop : MonoBehaviour
                     allPoints[i].randomSecondary = Random.Range(0, 10);
                     Vector3 previous = allPoints[i > 0 ? i - 1 : size - 1].position;
                     allPoints[i].random = 0;
-                    Instantiate(ReturnRandomList<GameObject>(allSpawn), Vector3.Lerp(previous, allPoints[i].position, Random.value), new Quaternion());
+                    allPoints[i].lastCreated = Instantiate(ReturnRandomList<GameObject>(allSpawn), Vector3.Lerp(previous, allPoints[i].position, Random.value), new Quaternion());
+                    allPoints[i].lastCreated.transform.localScale *= (Mathf.PerlinNoise(allPoints[i].position.x / freqPerlin, allPoints[i].position.z / freqPerlin) + 0.5f);
+                    FilterColor(allPoints[i].lastCreated.GetComponent<MeshRenderer>().material, allPoints[i].position);
+                    lastCreatedAbsolute = allPoints[i].lastCreated;
                 }
             }
         }
@@ -109,14 +128,21 @@ public class Prop : MonoBehaviour
         return v3;
     }
 
-    void UpdateGauss(int index)
+    #region modification
+    public void UpdateGauss(int index)
     {
         float sum = 0;
         allGauss.ForEach(x => sum += CalculateGaussian(Mathf.Abs(index - size / 2), x));
         allPoints[index].modifier = 0.001f + (sum * 0.01f);
     }
 
-    void AddVerticalExtension(float intensity)
+    public void FilterColor(Material mat, Vector3 position)
+    {
+        Color sampledColor = Color.Lerp(color1, color2, (Mathf.PerlinNoise(position.x / freqPerlin, position.z / freqPerlin)));
+        mat.color = sampledColor;
+    }
+
+    public void AddVerticalExtension(float intensity)
     {
         Gaussian gauss;
         gauss.middle = 90;
@@ -133,7 +159,7 @@ public class Prop : MonoBehaviour
         }
     }
 
-    void AddHorizontalExtension(float intensity)
+    public void AddHorizontalExtension(float intensity)
     {
         Gaussian gauss;
         gauss.middle = 0;
@@ -149,4 +175,21 @@ public class Prop : MonoBehaviour
             UpdateGauss(i);
         }
     }
+
+    public void StartPress()
+    {
+        isPressing = true;
+    }
+
+    public void EndPress()
+    {
+        isPressing = false;
+        pressedSince = 0;
+    }
+
+    public void setSizeLast(float delta)
+    {
+        lastCreatedAbsolute.transform.localScale *= delta;
+    }
+    #endregion
 }

@@ -329,10 +329,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b0055cf71144a4d867bdb761c2e6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   size: 360
   allSpawn:
   - {fileID: 2633557550647742519, guid: 064ff620a2dde4b45abeaf3e6c99c5a7, type: 3}
   - {fileID: 2523454257229049584, guid: a7e6122efbb171a499f07913a3889e6a, type: 3}
+  - {fileID: 2327825349492304380, guid: 808d851d3cf6d3a4a891a345d53b1b59, type: 3}
+  freqPerlin: 0.2
 --- !u!1 &1823006034
 GameObject:
   m_ObjectHideFlags: 0
