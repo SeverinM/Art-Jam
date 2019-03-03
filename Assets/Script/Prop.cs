@@ -123,6 +123,7 @@ public class Prop : MonoBehaviour
             futurePosition = transform.position + (currentDirection.normalized * Length);
         }
 
+        lastCreatedAbsolute = gameObject;
         lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
         lastCreatedAbsolute.transform.localScale *= Random.Range(0.5f, 1.5f);
         lastCreatedAbsolute.transform.Rotate(Vector3.up, Random.Range(0, 360));
