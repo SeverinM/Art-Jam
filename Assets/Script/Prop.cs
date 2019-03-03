@@ -23,7 +23,7 @@ public class Prop : MonoBehaviour
     public static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
     static Dictionary<int, List<GameObject>> allTypes;
-    public static float maxRange = 5;
+    public static float maxRange = 7;
     static Vector3 currentDirection;
     static bool someoneGrowing = false;
 
@@ -137,6 +137,7 @@ public class Prop : MonoBehaviour
 
     void Spawn(int ind, bool playSound = true)
     {
+        currentDirection.y = 0;
         currentDirection = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * currentDirection;
         currentDirection = currentDirection.normalized * StartLength;
         if (playSound) PlaySound(ind);
@@ -147,8 +148,8 @@ public class Prop : MonoBehaviour
 
         if (Vector3.Distance(new Vector3(0,0,0) , futurePosition) > maxRange)
         {
-            float randomVal = (Random.Range(90, 179) * (Random.value > 0.5 ? 1 : -1));
-            currentDirection = Quaternion.AngleAxis(randomVal, Vector3.up) * currentDirection;
+            currentDirection = Quaternion.AngleAxis(180, Vector3.up) * currentDirection;
+            currentDirection = Quaternion.AngleAxis(Random.Range(-10,10), Vector3.up) * currentDirection;
             currentDirection = currentDirection.normalized * StartLength;
             futurePosition = transform.position + (currentDirection.normalized * Length);
             Debug.Log("fin");
@@ -302,7 +303,7 @@ public class Prop : MonoBehaviour
 
             foreach (SkinnedMeshRenderer skinned in GameObject.FindObjectsOfType<SkinnedMeshRenderer>())
             {
-                skinned.SetBlendShapeWeight(0, skinned.GetBlendShapeWeight(0) + (Random.value * curve.Evaluate(time / timeMax) * 2));
+                skinned.SetBlendShapeWeight(0, skinned.GetBlendShapeWeight(0) + (Random.value * curve.Evaluate(time / timeMax) * 0.5f));
             }
             time += Time.deltaTime;
             yield return null;
