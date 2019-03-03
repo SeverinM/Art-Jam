@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 179179278}
   - component: {fileID: 179179277}
   - component: {fileID: 179179276}
+  - component: {fileID: 179179280}
   m_Layer: 5
   m_Name: InGameCanvas
   m_TagString: Untagged
@@ -215,6 +216,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &179179280
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179179275}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &238505937
 GameObject:
   m_ObjectHideFlags: 0
@@ -2509,6 +2522,7 @@ MonoBehaviour:
   prop: {fileID: 1831280829}
   canvasEndGame: {fileID: 1065403478}
   canvasStartGame: {fileID: 864742559}
+  canvasInGame: {fileID: 179179280}
   replayButton: {fileID: 871153115}
   text: {fileID: 790740361}
 --- !u!1 &1901294705
