@@ -65,14 +65,7 @@ public class Prop : MonoBehaviour
         if (lastCreatedAbsolute == null)
         {
             allSpawn = allSpawn.OrderBy(x => Random.value).ToList();
-            try
-            {
-                allSpawn.RemoveRange(5, 3);
-            }
-            catch 
-            {
-
-            }
+            allSpawn.RemoveRange(5, 3);
         }
 
         if (buff == null)
@@ -106,12 +99,12 @@ public class Prop : MonoBehaviour
         return list[index];
     }
 
-    void CopySpawn(Prop origin)
+    void CopySpawn(Prop destination)
     {
-        allSpawn.Clear();
-        foreach(GameObject gob in origin.allSpawn)
+        destination.allSpawn.Clear();
+        foreach(GameObject gob in allSpawn)
         {
-            allSpawn.Add(gob);
+            destination.allSpawn.Add(gob);
         }
     }
 
@@ -154,18 +147,18 @@ public class Prop : MonoBehaviour
 
         if (Vector3.Distance(new Vector3(0,0,0) , futurePosition) > maxRange)
         {
-            Debug.Log("fin");
             float randomVal = (Random.Range(90, 179) * (Random.value > 0.5 ? 1 : -1));
             currentDirection = Quaternion.AngleAxis(randomVal, Vector3.up) * currentDirection;
             currentDirection = currentDirection.normalized * StartLength;
             futurePosition = transform.position + (currentDirection.normalized * Length);
+            Debug.Log("fin");
         }
 
         lastCreatedAbsolute = gameObject;
         lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
         lastCreatedAbsolute.transform.localScale *= Random.Range(0.5f, 1.5f);
         lastCreatedAbsolute.transform.Rotate(Vector3.up, Random.Range(0, 360));
-        lastCreatedAbsolute.GetComponent<Prop>().CopySpawn(this);
+        CopySpawn(lastCreatedAbsolute.GetComponent<Prop>());
 
         if (lastCreatedAbsolute.GetComponent<MeshRenderer>())
             FilterColor(lastCreatedAbsolute.GetComponent<MeshRenderer>().material, lastCreatedAbsolute.transform.position);
