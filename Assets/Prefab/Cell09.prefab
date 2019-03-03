@@ -138,4 +138,4 @@ MonoBehaviour:
   - {fileID: 4190482205370058875, guid: ab2a48b2bdd14dd4593190f73c96a1a3, type: 3}
   freqPerlin: 0.01
   stop: 0
-  StartLength: 0.001
+  StartLength: 0.5

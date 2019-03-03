@@ -254,7 +254,7 @@ public class Prop : MonoBehaviour
 
         GameObject gob = Prop.lastCreatedAbsolute;
         float time = 0;
-        float timeMax = 2;
+        float timeMax = 7;
         float max = Random.Range(1.5f, 2.5f);
         Vector3 currentSize = gob.transform.localScale;
         Vector3 finalSize = currentSize * max;
