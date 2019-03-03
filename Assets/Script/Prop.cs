@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 
 public enum ActionsInput
@@ -10,6 +11,7 @@ public enum ActionsInput
     BiggerCell,
     ModifyShape,
     Copy,
+    NoInteract
 }
 
 public class Prop : MonoBehaviour
@@ -39,6 +41,7 @@ public class Prop : MonoBehaviour
 
     [SerializeField]
     List<GameObject> allSpawn;
+    List<GameObject> AllSpawn => allSpawn;
 
     [SerializeField]
     float freqPerlin = 0.01f;
@@ -58,6 +61,12 @@ public class Prop : MonoBehaviour
 
     private void Awake()
     {
+        if (lastCreatedAbsolute == null)
+        {
+            allSpawn = allSpawn.OrderBy(x => Random.value).ToList();
+            allSpawn.RemoveRange(5, 3);
+        }
+
         if (buff == null)
         {
             buff = new Buffer();
@@ -89,6 +98,15 @@ public class Prop : MonoBehaviour
         return list[index];
     }
 
+    void CopySpawn(Prop origin)
+    {
+        allSpawn.Clear();
+        foreach(GameObject gob in origin.allSpawn)
+        {
+            allSpawn.Add(gob);
+        }
+    }
+
     void Spawn()
     {
         currentDirection = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * currentDirection;
@@ -106,7 +124,9 @@ public class Prop : MonoBehaviour
         }
 
         lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
+        lastCreatedAbsolute.transform.localScale *= Random.Range(0.5f, 1.5f);
         lastCreatedAbsolute.transform.Rotate(Vector3.up, Random.Range(0, 360));
+        lastCreatedAbsolute.GetComponent<Prop>().CopySpawn(this);
 
         if (lastCreatedAbsolute.GetComponent<MeshRenderer>())
             FilterColor(lastCreatedAbsolute.GetComponent<MeshRenderer>().material, lastCreatedAbsolute.transform.position);
@@ -114,8 +134,9 @@ public class Prop : MonoBehaviour
         {
             FilterColor(lastCreatedAbsolute.GetComponent<SkinnedMeshRenderer>().material, lastCreatedAbsolute.transform.position);
         }
-            
 
+        if (!allTypes.ContainsKey(index))
+            allTypes[index] = new List<GameObject>();
         allTypes[index].Add(lastCreatedAbsolute);
         lastCreatedType = index;
 
@@ -144,6 +165,7 @@ public class Prop : MonoBehaviour
 
     public void InterpretInput(ActionsInput act, int type)
     {
+        Random.seed += type;
         switch (act)
         {
             case (ActionsInput.BiggerCell):
@@ -161,9 +183,23 @@ public class Prop : MonoBehaviour
             case (ActionsInput.ModifyShape):
                 StartCoroutine(SetShape());
                 break;
+
+            case (ActionsInput.NoInteract):
+                StartCoroutine(SlightShape());
+                break;
         }
     }
-    #endregion
+
+    IEnumerator SlightShape()
+    {
+        float sample = Mathf.PerlinNoise(Time.timeSinceLevelLoad * 0.002f, 0) - 0.5f;
+        sample *= 2;
+        foreach (SkinnedMeshRenderer skinned in GameObject.FindObjectsOfType<SkinnedMeshRenderer>())
+        {
+            skinned.SetBlendShapeWeight(0, skinned.GetBlendShapeWeight(0) + sample);
+        }
+        yield return null;
+    }
 
     IEnumerator Grow()
     {
@@ -202,11 +238,10 @@ public class Prop : MonoBehaviour
         GameObject gob = Prop.lastCreatedAbsolute;
         Vector3 firstPosition = gob.transform.position + new Vector3(Random.Range(0.00001f, gob.GetComponent<Prop>().Length), 0, Random.Range(0.00001f, gob.GetComponent<Prop>().Length));
         Vector3 delta = firstPosition - gob.transform.position;
-        int index;
         for (int i = 0; i < 3; i++)
         {
             delta = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * delta;
-            (Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), firstPosition + delta, new Quaternion()) as GameObject).transform.localScale *= Random.Range(0.1f, 1);
+            (Instantiate(Prop.lastCreatedAbsolute, firstPosition + delta, new Quaternion()) as GameObject).transform.localScale *= Random.Range(0.1f, 1);
         }
         yield return null;
     }
@@ -234,7 +269,6 @@ public class Prop : MonoBehaviour
 
     IEnumerator SetShape()
     {
-
         if (!Prop.lastCreatedAbsolute)
         {
             Spawn();
@@ -250,19 +284,16 @@ public class Prop : MonoBehaviour
 
             foreach (SkinnedMeshRenderer skinned in GameObject.FindObjectsOfType<SkinnedMeshRenderer>())
             {
-                skinned.SetBlendShapeWeight(0, (time / timeMax) * 100);
+                skinned.SetBlendShapeWeight(0, skinned.GetBlendShapeWeight(0) + (Random.value * curve.Evaluate(time / timeMax) * 2));
             }
             gob.transform.localScale = Vector3.Lerp(currentSize, finalSize, sizeCurve.Evaluate(time / timeMax));
             time += Time.deltaTime;
-
-            //if (GetComponent<SkinnedMeshRenderer>())
-            //{
-            //    GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, (time / timeMax) * 100);
-            //}
             yield return null;
         };
 
         
         yield return null;
     }
+
+    #endregion
 }
