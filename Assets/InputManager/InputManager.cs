@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
 
     public CanvasGroup canvasEndGame;
     public CanvasGroup canvasStartGame;
+    public CanvasGroup canvasInGame;
 
     public Button replayButton;
 
@@ -109,6 +110,11 @@ public class InputManager : MonoBehaviour
         if (gameStarted && canvasStartGame.alpha > 0)
         {
             canvasStartGame.alpha -= Time.deltaTime * 2;
+        }
+
+        if (gameStarted && canvasInGame.alpha < 1)
+        {
+            canvasInGame.alpha += Time.deltaTime * 2;
         }
 
         if (!recordLetters && canvasEndGame.alpha < 1)
