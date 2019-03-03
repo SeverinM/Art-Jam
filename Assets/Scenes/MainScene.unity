@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead173cd7e6b1834092bdd2de6f1573e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: f7e1664c
+  triggerList: ae8d9d44f7e1664c958ca0ea
   useOtherObject: 0
   data:
     valueGuid: 
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d58e77fc56c6f4581f8d865cac9a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: f7e1664c
+  triggerList: ae8d9d44f7e1664c958ca0ea
   useOtherObject: 0
   data:
     valueGuid: 
@@ -1637,7 +1637,7 @@ GameObject:
   - component: {fileID: 1182928189}
   - component: {fileID: 1182928188}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Screenshot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
