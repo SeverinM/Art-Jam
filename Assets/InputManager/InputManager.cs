@@ -67,7 +67,7 @@ public class InputManager : MonoBehaviour
 
     void Replay()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene(0);
     }
 
     private ActionsInput GetActionInputFromTime()
