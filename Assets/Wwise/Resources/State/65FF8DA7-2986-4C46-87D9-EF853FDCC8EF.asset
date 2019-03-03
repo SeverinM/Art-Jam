@@ -15,4 +15,5 @@ MonoBehaviour:
   objectName: Amb_InGame
   id: 993440393
   guid: 65FF8DA7-2986-4C46-87D9-EF853FDCC8EF
-  WwiseStateGroupReference: {fileID: 0}
+  WwiseStateGroupReference: {fileID: 11400000, guid: 1064e795ec1d44e48a2a14158d7b31ac,
+    type: 2}

@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: "Assets/Scenes/Le\u0301andreTest.unity"
     guid: 0f24963a1527b3e46a21f67fc250a032
-  - enabled: 1
-    path: Assets/MainScene.unity
+  - enabled: 0
+    path: Assets/Scenes/MainScene.unity
     guid: a820a4a3da558024685a2188a809a84b
   m_configObjects: {}
