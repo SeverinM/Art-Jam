@@ -98,7 +98,15 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if(gameStarted && canvasStartGame.alpha > 0)
+        Vector3 direction = Vector3.forward;
+
+        for (int i = 0; i < 360; i+= 45)
+        {
+            Debug.DrawLine(transform.position, transform.position + (direction * Prop.maxRange), Color.red);
+            direction = Quaternion.AngleAxis(45, Vector3.up) * direction;
+        }
+
+        if (gameStarted && canvasStartGame.alpha > 0)
         {
             canvasStartGame.alpha -= Time.deltaTime * 2;
         }

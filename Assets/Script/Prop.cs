@@ -23,7 +23,7 @@ public class Prop : MonoBehaviour
     public static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
     static Dictionary<int, List<GameObject>> allTypes;
-    static float maxRange = 3;
+    public static float maxRange = 3;
     static Vector3 currentDirection;
     static bool someoneGrowing = false;
 
