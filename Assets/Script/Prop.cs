@@ -18,7 +18,7 @@ public class Prop : MonoBehaviour
 
     Color color1;
     Color color2;
-    static GameObject lastCreatedAbsolute;
+    public static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
     static Dictionary<int, List<GameObject>> allTypes;
     static float maxRange = 5;
@@ -92,7 +92,6 @@ public class Prop : MonoBehaviour
     void Spawn()
     {
         currentDirection = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * currentDirection;
-        Debug.Log(currentDirection);
 
        //Recupere index prefab
         int index;
