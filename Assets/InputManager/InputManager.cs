@@ -17,34 +17,34 @@ public class InputManager : MonoBehaviour
         counterBetweenKeys = 0.0f;
 
         keyCellTypeDic = new Dictionary<string, int>();
-        keyCellTypeDic["a"] = 0;
-        keyCellTypeDic["z"] = 1;
-        keyCellTypeDic["e"] = 2;
-        keyCellTypeDic["r"] = 3;
+        keyCellTypeDic["a"] = 1;
+        keyCellTypeDic["z"] = 2;
+        keyCellTypeDic["e"] = 0;
+        keyCellTypeDic["r"] = 1;
         keyCellTypeDic["t"] = 0;
-        keyCellTypeDic["y"] = 1;
+        keyCellTypeDic["y"] = 2;
         keyCellTypeDic["u"] = 3;
         keyCellTypeDic["i"] = 2;
         keyCellTypeDic["o"] = 1;
-        keyCellTypeDic["p"] = 0;
+        keyCellTypeDic["p"] = 4;
 
-        keyCellTypeDic["q"] = 3;
+        keyCellTypeDic["q"] = 4;
         keyCellTypeDic["s"] = 0;
-        keyCellTypeDic["d"] = 3;
-        keyCellTypeDic["f"] = 2;
-        keyCellTypeDic["g"] = 1;
-        keyCellTypeDic["h"] = 3;
-        keyCellTypeDic["j"] = 0;
-        keyCellTypeDic["k"] = 2;
+        keyCellTypeDic["d"] = 1;
+        keyCellTypeDic["f"] = 3;
+        keyCellTypeDic["g"] = 4;
+        keyCellTypeDic["h"] = 2;
+        keyCellTypeDic["j"] = 4;
+        keyCellTypeDic["k"] = 4;
         keyCellTypeDic["l"] = 3;
-        keyCellTypeDic["m"] = 2;
+        keyCellTypeDic["m"] = 3;
 
-        keyCellTypeDic["w"] = 2;
-        keyCellTypeDic["x"] = 1;
-        keyCellTypeDic["c"] = 0;
-        keyCellTypeDic["v"] = 3;
-        keyCellTypeDic["b"] = 2;
-        keyCellTypeDic["n"] = 1;
+        keyCellTypeDic["w"] = 4;
+        keyCellTypeDic["x"] = 4;
+        keyCellTypeDic["c"] = 3;
+        keyCellTypeDic["v"] = 4;
+        keyCellTypeDic["b"] = 4;
+        keyCellTypeDic["n"] = 0;
 
         keyCellTypeDic["space"] = 0;
     }
