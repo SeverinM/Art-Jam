@@ -47,7 +47,7 @@ public class CameraBackward : MonoBehaviour
         {
             acting = true;
             origin = transform.position;
-            end = transform.position + (Vector3.up * 2);
+            end = transform.position + (Vector3.up * 5);
             x = 0;
         }
     }

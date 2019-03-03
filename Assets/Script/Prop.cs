@@ -285,6 +285,8 @@ public class Prop : MonoBehaviour
     {
         AkSoundEngine.PostEvent("Play_Color", Camera.main.gameObject);
         Color col = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
+        float timeMax = 2;
+        float time = 0;
         foreach (GameObject gob in allTypes[type])
         {
             if (gob.GetComponent<MeshRenderer>())
