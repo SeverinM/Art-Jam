@@ -145,6 +145,7 @@ public class Prop : MonoBehaviour
     void Spawn(int ind, bool playSound = true)
     {
         currentDirection = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * currentDirection;
+        currentDirection = currentDirection.normalized * StartLength;
         if (playSound) PlaySound(ind);
 
         //Recupere index prefab
@@ -156,6 +157,7 @@ public class Prop : MonoBehaviour
             Debug.Log(currentDirection);
             float randomVal = (Random.Range(90, 179) * (Random.value > 0.5 ? 1 : -1));
             currentDirection = Quaternion.AngleAxis(randomVal, Vector3.up) * currentDirection;
+            currentDirection = currentDirection.normalized * StartLength;
             futurePosition = transform.position + (currentDirection.normalized * Length);
         }
 
@@ -186,6 +188,7 @@ public class Prop : MonoBehaviour
             lastCreatedAbsolute = buff.Stored;
             Vector3 delta = transform.position;
             currentDirection = Quaternion.AngleAxis(90 * (Random.value > 0.5 ? 1 : -1), Vector3.up) * (lastCreatedAbsolute.transform.position - origin);
+            currentDirection = currentDirection.normalized * StartLength;
             currentDirection.y = 0;
             futurePosition = lastCreatedAbsolute.transform.position + (delta.normalized * Length);
             lastCreatedAbsolute = Instantiate(ReturnRandomList<GameObject>(allSpawn, out index), futurePosition, new Quaternion());
@@ -285,8 +288,7 @@ public class Prop : MonoBehaviour
     {
         AkSoundEngine.PostEvent("Play_Color", Camera.main.gameObject);
         Color col = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
-        float timeMax = 2;
-        float time = 0;
+
         foreach (GameObject gob in allTypes[type])
         {
             if (gob.GetComponent<MeshRenderer>())
@@ -302,7 +304,6 @@ public class Prop : MonoBehaviour
         AkSoundEngine.PostEvent("Play_Morphing", Camera.main.gameObject);
         float time = 0;
         float timeMax = 2;
-        float max = Random.Range(0.5f, 1.5f);
         while (time < timeMax)
         {
 
