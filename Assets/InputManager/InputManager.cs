@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class InputManager : MonoBehaviour
     private float counterBetweenKeys;
     string allWroteLetters;
     bool recordLetters = true;
+    bool gameStarted = false;
+
+    public CanvasGroup canvasEndGame;
+    public CanvasGroup canvasStartGame;
+
+    public Button replayButton;
 
     [SerializeField]
     UnityEngine.UI.Text text;
@@ -19,6 +26,8 @@ public class InputManager : MonoBehaviour
         prop = GetComponent<Prop>();
 
         counterBetweenKeys = 0.0f;
+
+        replayButton.onClick.AddListener( Replay );
 
         keyCellTypeDic = new Dictionary<string, int>();
         keyCellTypeDic["a"] = 0;
@@ -53,8 +62,18 @@ public class InputManager : MonoBehaviour
         keyCellTypeDic["space"] = 1;
     }
 
+    void Replay()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
+
     private ActionsInput GetActionInputFromTime()
     {
+        if(!gameStarted)
+        {
+            gameStarted = true;
+        }
+
         ActionsInput actionsInput = ActionsInput.BiggerCell;
         if (counterBetweenKeys < 0.5f)
         {
@@ -77,9 +96,14 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (!recordLetters && GameObject.FindObjectOfType<CanvasGroup>().alpha < 1)
+        if(gameStarted && canvasStartGame.alpha > 0)
         {
-            GameObject.FindObjectOfType<CanvasGroup>().alpha += Time.deltaTime;
+            canvasStartGame.alpha -= Time.deltaTime * 2;
+        }
+
+        if (!recordLetters && canvasEndGame.alpha < 1)
+        {
+            canvasEndGame.alpha += Time.deltaTime;
         }
 
         if (!recordLetters) return;
