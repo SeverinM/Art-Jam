@@ -77,15 +77,15 @@ public class InputManager : MonoBehaviour
         }
 
         ActionsInput actionsInput = ActionsInput.BiggerCell;
-        if (counterBetweenKeys < 0.5f)
+        if (counterBetweenKeys < 0.2f)
         {
             actionsInput = ActionsInput.BiggerCell;
         }
-        else if (counterBetweenKeys < 1.0f)
+        else if (counterBetweenKeys < 0.5f)
         {
             actionsInput = ActionsInput.Copy;
         }
-        else if (counterBetweenKeys < 1.5f)
+        else if (counterBetweenKeys < 0.7f)
         {
             actionsInput = ActionsInput.ModifyShape;
         }
