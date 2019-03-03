@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c5dce1e995aa94fbf8372b40bcbdcb, type: 3}
+  m_Name: 27FA56A0-E306-4711-A382-AD2FED35FB22
+  m_EditorClassIdentifier: 
+  objectName: End_AmbInGame
+  id: 655801746
+  guid: 27FA56A0-E306-4711-A382-AD2FED35FB22
+  WwiseStateGroupReference: {fileID: 11400000, guid: 1064e795ec1d44e48a2a14158d7b31ac,
+    type: 2}
