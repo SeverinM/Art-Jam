@@ -9,5 +9,5 @@
   <SoundbankPath>Audio/GeneratedSoundBanks</SoundbankPath>
   <WwiseInstallationPathMac />
   <WwiseInstallationPathWindows>C:\Program Files (x86)\Audiokinetic\Wwise 2018.1.5.6835</WwiseInstallationPathWindows>
-  <WwiseProjectPath>../../Petri_Wwise/Petri.wproj</WwiseProjectPath>
+  <WwiseProjectPath>../Petri_Wwise-master/Petri.wproj</WwiseProjectPath>
 </WwiseSettings>
