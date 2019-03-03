@@ -116,6 +116,11 @@ public class InputManager : MonoBehaviour
             canvasEndGame.alpha += Time.deltaTime;
         }
 
+        if (!recordLetters && Input.GetKeyDown(KeyCode.F2))
+        {
+            StartCoroutine(ScreenShot());
+        }
+
         if (!recordLetters) return;
 
         counterBetweenKeys += Time.deltaTime;
@@ -327,6 +332,15 @@ public class InputManager : MonoBehaviour
             recordLetters = false;
             AkSoundEngine.SetState("State_Amb_InGame", "End_AmbInGame");
         }
+    }
+
+    IEnumerator ScreenShot()
+    {
+        canvasEndGame.GetComponent<Canvas>().enabled = false;
+        yield return new WaitForEndOfFrame();
+        ScreenCapture.CaptureScreenshot("Screenshot.png");
+        canvasEndGame.GetComponent<Canvas>().enabled = true;
+        
     }
 
 }

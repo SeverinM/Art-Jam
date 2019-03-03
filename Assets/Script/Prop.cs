@@ -199,7 +199,12 @@ public class Prop : MonoBehaviour
 
     public void InterpretInput(ActionsInput act, int type)
     {
-        Random.seed += type;
+        if (lastCreatedAbsolute == null)
+        {
+            StartCoroutine(Grow(type));
+            return;
+        }
+
         switch (act)
         {
             case (ActionsInput.BiggerCell):
