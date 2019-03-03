@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 217a10b5e22b47b4c98d4f4fdc8bf1ca, type: 3}
+  m_Name: 45F56F12-0C36-4E4F-B7EF-D7D546ED99CD
+  m_EditorClassIdentifier: 
+  objectName: Play_Drone
+  id: 4042141136
+  guid: 45F56F12-0C36-4E4F-B7EF-D7D546ED99CD
