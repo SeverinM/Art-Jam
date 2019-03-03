@@ -23,7 +23,7 @@ public class Prop : MonoBehaviour
     public static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
     static Dictionary<int, List<GameObject>> allTypes;
-    public static float maxRange = 3;
+    public static float maxRange = 5;
     static Vector3 currentDirection;
     static bool someoneGrowing = false;
 
@@ -152,9 +152,9 @@ public class Prop : MonoBehaviour
         int index;
         Vector3 futurePosition = transform.position + (currentDirection.normalized * Length);
 
-        if (Vector3.Distance(new Vector3(0,0,0) , futurePosition + new Vector3(Length, 0, Length)) > maxRange)
+        if (Vector3.Distance(new Vector3(0,0,0) , futurePosition) > maxRange)
         {
-            Debug.Log(currentDirection);
+            Debug.Log("fin");
             float randomVal = (Random.Range(90, 179) * (Random.value > 0.5 ? 1 : -1));
             currentDirection = Quaternion.AngleAxis(randomVal, Vector3.up) * currentDirection;
             currentDirection = currentDirection.normalized * StartLength;
