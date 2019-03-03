@@ -16,37 +16,39 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
+        AkSoundEngine.SetState("State_Amb_InGame", "Amb_InGame");
+
         prop = GetComponent<Prop>();
 
         counterBetweenKeys = 0.0f;
 
         keyCellTypeDic = new Dictionary<string, int>();
-        keyCellTypeDic["a"] = 0;
-        keyCellTypeDic["z"] = 1;
-        keyCellTypeDic["e"] = 2;
-        keyCellTypeDic["r"] = 3;
-        keyCellTypeDic["t"] = 4;
-        keyCellTypeDic["y"] = 0;
-        keyCellTypeDic["u"] = 1;
+        keyCellTypeDic["a"] = 1;
+        keyCellTypeDic["z"] = 2;
+        keyCellTypeDic["e"] = 0;
+        keyCellTypeDic["r"] = 1;
+        keyCellTypeDic["t"] = 0;
+        keyCellTypeDic["y"] = 2;
+        keyCellTypeDic["u"] = 3;
         keyCellTypeDic["i"] = 2;
-        keyCellTypeDic["o"] = 3;
+        keyCellTypeDic["o"] = 1;
         keyCellTypeDic["p"] = 4;
 
-        keyCellTypeDic["q"] = 0;
-        keyCellTypeDic["s"] = 1;
-        keyCellTypeDic["d"] = 2;
+        keyCellTypeDic["q"] = 4;
+        keyCellTypeDic["s"] = 0;
+        keyCellTypeDic["d"] = 1;
         keyCellTypeDic["f"] = 3;
         keyCellTypeDic["g"] = 4;
-        keyCellTypeDic["h"] = 0;
-        keyCellTypeDic["j"] = 1;
-        keyCellTypeDic["k"] = 2;
+        keyCellTypeDic["h"] = 2;
+        keyCellTypeDic["j"] = 4;
+        keyCellTypeDic["k"] = 4;
         keyCellTypeDic["l"] = 3;
-        keyCellTypeDic["m"] = 4;
+        keyCellTypeDic["m"] = 3;
 
-        keyCellTypeDic["w"] = 0;
-        keyCellTypeDic["x"] = 1;
-        keyCellTypeDic["c"] = 2;
-        keyCellTypeDic["v"] = 3;
+        keyCellTypeDic["w"] = 4;
+        keyCellTypeDic["x"] = 4;
+        keyCellTypeDic["c"] = 3;
+        keyCellTypeDic["v"] = 4;
         keyCellTypeDic["b"] = 4;
         keyCellTypeDic["n"] = 0;
 
@@ -89,7 +91,6 @@ public class InputManager : MonoBehaviour
         //////  A  //////
         if (Input.GetKeyUp("a"))
         {
-            AkSoundEngine.PostEvent("Play_Mic_01", Camera.main.gameObject);
             prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["a"]);
             counterBetweenKeys = 0.0f;
             allWroteLetters += "a";
@@ -97,7 +98,6 @@ public class InputManager : MonoBehaviour
         //////  Z  //////
         if (Input.GetKeyUp("z"))
         {
-            AkSoundEngine.PostEvent("Play_Mic_02", Camera.main.gameObject);
             prop.InterpretInput(GetActionInputFromTime(), keyCellTypeDic["z"]);
             counterBetweenKeys = 0.0f;
             allWroteLetters += "z";
@@ -290,9 +290,10 @@ public class InputManager : MonoBehaviour
 
         text.text = allWroteLetters;
 
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKeyUp(KeyCode.Escape) && recordLetters)
         {
             recordLetters = false;
+            AkSoundEngine.SetState("State_Amb_InGame", "End_AmbInGame");
         }
     }
 

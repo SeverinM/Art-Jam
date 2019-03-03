@@ -23,8 +23,9 @@ public class Prop : MonoBehaviour
     public static GameObject lastCreatedAbsolute;
     static int lastCreatedType;
     static Dictionary<int, List<GameObject>> allTypes;
-    static float maxRange = 5;
+    static float maxRange = 3;
     static Vector3 currentDirection;
+    static bool someoneGrowing = false;
 
     [SerializeField]
     AnimationCurve curve;
@@ -64,7 +65,14 @@ public class Prop : MonoBehaviour
         if (lastCreatedAbsolute == null)
         {
             allSpawn = allSpawn.OrderBy(x => Random.value).ToList();
-            allSpawn.RemoveRange(5, 3);
+            try
+            {
+                allSpawn.RemoveRange(5, 3);
+            }
+            catch 
+            {
+
+            }
         }
 
         if (buff == null)
@@ -107,11 +115,39 @@ public class Prop : MonoBehaviour
         }
     }
 
-    void Spawn()
+    void PlaySound(int index)
+    {
+        string value = "";
+        switch (index)
+        {
+            case 0:
+                value = "Play_Mic_01";
+                break;
+            case 1:
+                value = "Play_Mic_02";
+                break;
+            case 2:
+                value = "Play_Mic_05";
+                break;
+            case 3:
+                value = "Play_Mic_04";
+                break;
+            case 4:
+                value = "Play_Mic_03";
+                break;
+            default:
+                value = "Play_Mic_01";
+                break;
+        }
+        AkSoundEngine.PostEvent(value, Camera.main.gameObject);
+    }
+
+    void Spawn(int ind, bool playSound = true)
     {
         currentDirection = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * currentDirection;
+        if (playSound) PlaySound(ind);
 
-       //Recupere index prefab
+        //Recupere index prefab
         int index;
         Vector3 futurePosition = transform.position + (currentDirection.normalized * Length);
 
@@ -170,11 +206,11 @@ public class Prop : MonoBehaviour
         switch (act)
         {
             case (ActionsInput.BiggerCell):
-                StartCoroutine(Grow());
+                StartCoroutine(Grow(type));
                 break;
 
             case (ActionsInput.Copy):
-                StartCoroutine(Copy());
+                StartCoroutine(Copy(type));
                 break;
 
             case (ActionsInput.SetColorPerType):
@@ -182,7 +218,7 @@ public class Prop : MonoBehaviour
                 break;
 
             case (ActionsInput.ModifyShape):
-                StartCoroutine(SetShape());
+                StartCoroutine(SetShape(type));
                 break;
 
             case (ActionsInput.NoInteract):
@@ -202,15 +238,15 @@ public class Prop : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator Grow()
-    {
+    IEnumerator Grow(int ind)
+    {   
         if (!Prop.lastCreatedAbsolute)
         {
-            Spawn();
+            Spawn(ind);
         }
         else
         {
-            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn();
+            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn(ind);
         }
 
         GameObject gob = Prop.lastCreatedAbsolute;
@@ -219,8 +255,9 @@ public class Prop : MonoBehaviour
         float max = Random.Range(1.5f, 2.5f);
         Vector3 currentSize = gob.transform.localScale;
         Vector3 finalSize = currentSize * max;
+
         while (time < timeMax)
-        {
+        {       
             gob.transform.localScale = Vector3.Lerp(currentSize, finalSize, sizeCurve.Evaluate(time / timeMax));
             time += Time.deltaTime;
             yield return null;
@@ -229,13 +266,9 @@ public class Prop : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator Copy()
+    IEnumerator Copy(int ind)
     {
-        if (!Prop.lastCreatedAbsolute)
-        {
-            Spawn();
-        }
-
+        AkSoundEngine.PostEvent("Play_Copy", Camera.main.gameObject);
         GameObject gob = Prop.lastCreatedAbsolute;
         Vector3 firstPosition = gob.transform.position + new Vector3(Random.Range(0.00001f, gob.GetComponent<Prop>().Length), 0, Random.Range(0.00001f, gob.GetComponent<Prop>().Length));
         Vector3 delta = firstPosition - gob.transform.position;
@@ -243,20 +276,14 @@ public class Prop : MonoBehaviour
         {
             delta = Quaternion.AngleAxis(Random.Range(-20, 20), Vector3.up) * delta;
             (Instantiate(Prop.lastCreatedAbsolute, firstPosition + delta, new Quaternion()) as GameObject).transform.localScale *= Random.Range(0.1f, 1);
+
         }
         yield return null;
     }
 
     IEnumerator SetColor(int type)
     {
-        if (!Prop.lastCreatedAbsolute)
-        {
-            Spawn();
-        }
-        else
-        {
-            Prop.lastCreatedAbsolute.GetComponent<Prop>().Spawn();
-        }
+        AkSoundEngine.PostEvent("Play_Color", Camera.main.gameObject);
         Color col = Random.ColorHSV(0, 1, 35 / 255.0f, 35 / 255.0f);
         foreach (GameObject gob in allTypes[type])
         {
@@ -268,18 +295,12 @@ public class Prop : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator SetShape()
+    IEnumerator SetShape(int ind)
     {
-        if (!Prop.lastCreatedAbsolute)
-        {
-            Spawn();
-        }
-        GameObject gob = Prop.lastCreatedAbsolute;
+        AkSoundEngine.PostEvent("Play_Morphing", Camera.main.gameObject);
         float time = 0;
         float timeMax = 2;
         float max = Random.Range(0.5f, 1.5f);
-        Vector3 currentSize = gob.transform.localScale;
-        Vector3 finalSize = currentSize * max;
         while (time < timeMax)
         {
 
@@ -287,7 +308,6 @@ public class Prop : MonoBehaviour
             {
                 skinned.SetBlendShapeWeight(0, skinned.GetBlendShapeWeight(0) + (Random.value * curve.Evaluate(time / timeMax) * 2));
             }
-            gob.transform.localScale = Vector3.Lerp(currentSize, finalSize, sizeCurve.Evaluate(time / timeMax));
             time += Time.deltaTime;
             yield return null;
         };
